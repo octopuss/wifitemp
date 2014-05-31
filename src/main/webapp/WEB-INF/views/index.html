@@ -1,0 +1,183 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teploměr</title>
+    <link rel="stylesheet" href="../../resources/css/foundation.css" />
+    <script src="../../resources/js/vendor/modernizr.js"></script>
+  </head>
+  <body>
+    
+    <div class="row">
+      <div class="large-12 columns">
+        <h1>Teploměř</h1>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="large-12 columns">
+      	<div class="panel">
+	        filtry
+      	</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-4 medium-4 columns">
+        <h5>Filtry</h5>
+      
+      </div>     
+
+      <div class="large-8 medium-8 columns">
+			  <h5>Aktuální data</h5>
+			  <canvas id="myDayChart" width="660" height="400"></canvas>
+        <canvas id="myMonthChart" width="660" height="400"></canvas>
+      </div>
+    </div>
+    
+    <script src="../../resources/js/vendor/jquery.js"></script>
+    <script src="../../resources/js/foundation.min.js"></script>
+    <script src="../../resources/js/Chart.min.js"></script>
+    <script>
+      $(document).foundation();
+      fillColors=["rgba(220,220,220,0.5)","rgba(151,187,205,0.5)"];
+      strokeColors=["rgba(220,220,220,1)", "rgba(151,187,205,1)"];
+      pointColors=["rgba(220,220,220,1)","rgba(151,187,205,1)"];
+      function loadData(criteria,callback){
+        $.ajax({url:"http://localhost:8080/wifitemp/data",datatype:"jsonp", success:callback})
+      }
+
+      chartOptions={};
+      chartOptions.datasetFill =false;
+      chartOptions.showTooltips=true;
+     
+         
+      loadData(null,createDayChart);  
+
+      loadData(null,createMonthChart);
+
+      function createMonthChart(data){
+
+        var ctx = $("#myMonthChart").get(0).getContext("2d");
+        var chartData = {};
+        var date = new Date(data[0]._id.time);
+        chartData.labels = getDateLabels(date.getMonth(), date.getFullYear());
+        chartData.datasets = getDatasets(data, "M");
+        console.log(chartData);
+        new Chart(ctx).Line(chartData,chartOptions);
+        
+      }
+
+      function createDayChart(data) {
+        
+        var ctx = $("#myDayChart").get(0).getContext("2d");
+        var chartData = {};
+        chartData.labels = ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"];
+        chartData.datasets=getDatasets(data,"D");
+        console.log(chartData);
+        new Chart(ctx).Line(chartData,chartOptions);        
+      }
+
+    function getDatasets(data, unit) {
+      dataSets=[];
+      plotData=[];
+        
+       
+        for(var r in data[0].readings) {
+          sensorId=data[0].readings[r].sensorId;
+          dataSets[r] = {
+              fillColor : fillColors[r],
+              strokeColor : strokeColors[r],
+              pointColor : pointColors[r],
+              pointStrokeColor : "#fff",
+              data : getPlotData(data, sensorId, unit)
+        }
+      }
+      return dataSets;
+    }
+
+    function getPlotData(data, sensorId, unit) {
+      if(unit=="D") {
+           return getDayPlotData(data,sensorId);
+        }
+
+         if(unit=="M") {
+          return getMonthPlotData(data,sensorId);
+        }
+    }
+
+    function getMonthPlotData(data, sensorId) {
+      var d = new Date(data[0]._id.time);
+      nod = getNumberOfDays(d.getFullYear(),d.getMonth());
+      returnDataSet =[];
+      for (var i = nod - 1; i >= 0; i--) {
+        returnDataSet.push(0);
+      };
+      for(var i in data) {
+        entry = data[i];
+        var date = new Date(entry._id.time);
+        var dayIndex = date.getDate()-1;
+        for(var j in entry.readings) {
+          reading = entry.readings[j];
+          if(reading.sensorId==sensorId) {
+            returnDataSet[dayIndex]=reading.temperature.value;
+          }
+        } 
+
+      }
+      return returnDataSet;
+
+    }
+
+
+    function getDayPlotData(entries,sensorId) {
+      returnDataSet=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      for(var i in entries) {
+        entry = entries[i];
+        //console.log(entry);
+        var date = new Date(entry._id.time);
+        var hourIndex = date.getHours()-1;
+        for(var j in entry.readings) {
+          reading = entry.readings[j];
+          if(reading.sensorId==sensorId) {
+            returnDataSet[hourIndex]=reading.temperature.value;
+          }
+        } 
+      }
+      return returnDataSet;
+    }
+
+    function getDateLabels(month, year) {
+        labels = [];
+        days = getDaysInMonth(month,year);
+        for(var i in days) {
+          day = days[i];
+          labels.push(day.getDate()+"."+day.getMonth()+"."+day.getFullYear());
+        }
+        return labels;
+    }
+
+function getNumberOfDays(year, month) {
+    var isLeap = ((year % 4) == 0 && ((year % 100) != 0 || (year % 400) == 0));
+    return [31, (isLeap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+}
+
+    /**
+ * @param {int} The month number, 0 based
+ * @param {int} The year, not zero based, required to account for leap years
+ * @return {Date[]} List with date objects for each day of the month
+ */
+function getDaysInMonth(month, year) {
+     var date = new Date(year, month, 1);
+     var days = [];
+     while (date.getMonth() === month) {
+        days.push(new Date(date));
+        date.setDate(date.getDate() + 1);
+     }
+     return days;
+}
+
+    </script>
+  </body>
+</html>
