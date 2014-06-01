@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import sk.octopuss.wifitemp.repository.ReadingRepository;
@@ -21,6 +22,11 @@ public class HomeController {
 	@ResponseBody
 	public List<Map> data() throws IOException {
 		return readingRepository.findAllReadings();
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String home() {
+		return "home";
 	}
 
 }
