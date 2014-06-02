@@ -2,7 +2,8 @@
       strokeColors=["rgba(220,220,220,1)", "rgba(151,187,205,1)"];
       pointColors=["rgba(220,220,220,1)","rgba(151,187,205,1)"];
       function loadData(criteria,callback){
-        $.ajax({url:"http://localhost:8080/wifitemp/data",datatype:"jsonp", success:callback})
+    	  
+        $.ajax({url:window.app.ROOT_URL+"/data",datatype:"jsonp", success:callback})
       }
 
       chartOptions={};

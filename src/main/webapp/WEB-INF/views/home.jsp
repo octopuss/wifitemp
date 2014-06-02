@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,13 +9,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Teploměr</title>
            <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-           <spring:url value="/resources/js/main.js" var="main_js_url"/>
+       
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="${main_js_url}"></script>
+   
     <!-- Bootstrap -->
      <spring:url value="/resources/css/bootstrap.min.css" var="bs_css_url"/>
         <link rel="stylesheet" href="${bs_css_url}" />
-
+        <spring:url value="/" var="root_url" />
+        <script type="text/javascript">
+        window.app = window.app || {};
+        window.app.ROOT_URL="${fn:substring(root_url,0, fn:length(root_url)-1)}";
+        </script>
+        <spring:url value="/resources/js/main.js" var="main_js_url"/>
+            <script src="${main_js_url}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
