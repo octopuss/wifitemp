@@ -15,6 +15,7 @@
   
   
   function init(){
+	  setDefaults();
 	  setupCallbacks();
 	  loadData(null);	  
   }
@@ -23,6 +24,11 @@
 	  dataUpdatedCallbacks.add(applyDataFilters);
 	  dataUpdatedCallbacks.add(refreshChart);
 	  dataUpdatedCallbacks.add(refreshMinMaxAvg);
+  }
+  
+  function setDefaults(){
+
+	  document.getElementById("date").valueAsDate = new Date();
   }
   
   function applyDataFilters(){
@@ -75,10 +81,17 @@
 	  $.ajax({url:window.app.ROOT_URL+"/data",datatype:"jsonp", success:callback});
   }
 
-  	getMinValue(){
+  	function getMinValue(){
+  		
+  	}
+  	
+  	function getMaxValue(){
   		
   	}
       
+  	function getAvgValue(){
+  		
+  	}
  
 
       function createYearChart(data,ctx){

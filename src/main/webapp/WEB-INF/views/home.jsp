@@ -39,6 +39,10 @@
        <div class="media"><img class="pull-left" style="padding-top:15px" src="https://cdn2.iconfinder.com/data/icons/freecns-cumulus/32/519770-82_Thermometer_Half_Full-64.png"><h1 class="page-header">Teploměr <small>Jungmannova</small></h1></div>
         <div class="row">
           <div class="col-xs-4 col-md-2">
+          	<div class="form-group">
+    <label for="date">Datum</label>
+    <input type="date" class="form-control" id="date">
+  </div>
             <h2>Přehledy</h2>
             <a href="#" class="btn btn-primary btn-lg btn-block" onclick="loadData(null,createHourChart);"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>Hodinový</a><br>
             <a href="#" class="btn btn-primary btn-lg btn-block" onclick=" loadData(null,createDayChart);"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-time"></span>Denní</a><br>
@@ -48,7 +52,7 @@
               <strong>Aktuální teplota</strong>
               <h2>33°C</h2>
             </div>
-            <div>Poslední aktualizace:<br><kbd>21.5.2014 21:42:20</kbd></div>
+            <div>Poslední aktualizace:<br><kbd>${generatedDate}</kbd></div>
           </div>
           <div class="col-xs-14 col-md-10">
             <div class="panel panel-default">
