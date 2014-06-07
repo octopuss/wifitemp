@@ -20,6 +20,8 @@
         window.app = window.app || {};
         window.app.ROOT_URL="${fn:substring(root_url,0, fn:length(root_url)-1)}";
         </script>
+          <spring:url value="/resources/js/utils.js" var="utils_js_url"/>
+            <script src="${utils_js_url}"></script>
         <spring:url value="/resources/js/main.js" var="main_js_url"/>
             <script src="${main_js_url}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -58,9 +60,9 @@
                   <canvas id="temperatureChart" width="1000" height="400"></canvas>
                 </div>
                 <div class="col-xs-4 col-md-2">
-                  <div class="alert alert-info">Nejnižší: <strong>15.2°C</strong></div>
-                  <div class="alert alert-warning">Průměrná: <strong>17.2°C</strong></div>
-                  <div class="alert alert-danger">Nejvyšší: <strong>25.2°C</strong></div>
+                  <div class="alert alert-info">Nejnižší: <strong class="minValue">15.2°C</strong></div>
+                  <div class="alert alert-warning">Průměrná: <strong class="avgValue">17.2°C</strong></div>
+                  <div class="alert alert-danger">Nejvyšší: <strong class="maxValue">25.2°C</strong></div>
                 </div>
               </div>
             </div>

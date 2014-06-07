@@ -9,8 +9,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.stereotype.Repository;
 
+import sk.octopuss.wifitemp.domain.Entry;
+
 @Repository
-public class ReadingRepository {
+public class EntryRepository {
 
 	@Autowired
 	MongoTemplate mongoTemplate;
@@ -18,8 +20,18 @@ public class ReadingRepository {
 	@Value("${db.collection}")
 	String collectionName;
 
-	public List<Map> findAllReadings() {
-		final BasicQuery query = new BasicQuery("{}");
+	public List<Entry> findAllEntries(String queryString) {
+		final BasicQuery query = new BasicQuery(queryString);
+
+		return mongoTemplate.find(query, Entry.class, collectionName);
+	}
+
+	public void saveEntry(Entry entry) {
+		mongoTemplate.insert(entry, collectionName);
+	}
+
+	public List<Map> findAllReadings(String queryString) {
+		final BasicQuery query = new BasicQuery(queryString);
 		List<Map> readings = mongoTemplate.find(query, Map.class, collectionName);
 		return readings;
 
@@ -30,6 +42,6 @@ public class ReadingRepository {
 		// return cursor.next().toString();
 		// }
 		// });
-
 	}
+
 }
