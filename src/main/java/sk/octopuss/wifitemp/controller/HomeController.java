@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import sk.octopuss.wifitemp.domain.QueryResult;
 import sk.octopuss.wifitemp.domain.Reading;
-import sk.octopuss.wifitemp.domain.Reading.ReadingType;
+import sk.octopuss.wifitemp.domain.AbstractReading.ReadingType;
 import sk.octopuss.wifitemp.repository.ReadingRepository;
 import sk.octopuss.wifitemp.service.ReadingService;
 
@@ -33,7 +33,7 @@ public class HomeController {
 
 	private String DEFAULT_JSON = "{}";
 
-	private String DEFAULT_DATA_SCOPE = "H";
+	private String DEFAULT_DATA_SCOPE = "D";
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
@@ -45,11 +45,8 @@ public class HomeController {
 		if (StringUtils.isEmpty(dataScope)) {
 			dataScope = DEFAULT_DATA_SCOPE;
 		}
-		if (dataScope.equals("H")) {
-			return readingService.findAllInHour(fromTime, toTime);
-		}
+			return readingService.findAllInScope(fromTime, toTime, dataScope);
 
-		return null;
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -79,7 +76,7 @@ public class HomeController {
 		reading.setNodeName("Jungmannova 1405");
 		reading.setReadingType(ReadingType.TEMPERATURE);
 		reading.setValue(randomTemperature("35"));
-		reading.setValueDimension("Â°C");
+		reading.setValueDimension("°C");
 		reading.setSensorId("temp01");
 		return reading;
 

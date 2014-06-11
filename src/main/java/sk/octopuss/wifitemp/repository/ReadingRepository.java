@@ -65,19 +65,6 @@ public class ReadingRepository {
 		return mongoTemplate.getCollection(collectionName).distinct(fieldName, query.getQueryObject());
 	}
 
-	// public List<Entry> findHourAvgInDay(Long fromTime, Long toTime) {
-	// Criteria timeCriteria = Criteria
-	// .where(CREATED_FIELD_NAME)
-	// .exists(true)
-	// .andOperator(Criteria.where(CREATED_FIELD_NAME).gte(fromTime),
-	// Criteria.where(CREATED_FIELD_NAME).lt(toTime));
-	//
-	// AggregationOperation match = Aggregation.match(timeCriteria);
-	// AggregationOperation group = Aggregation.group("hour").avg("readings[0].value");
-	// Aggregation aggregation = newAggregation(match, group);
-	// AggregationResults<StoreSummary> result = this.mongoTemplate.aggregate(aggregation, "eft_transactions",
-	// StoreSummary.class);
-	// }
 
 	public List<Reading> findDayAvgInMonth(Long fromTime, Long toTime) {
 		return null;
@@ -90,35 +77,32 @@ public class ReadingRepository {
 	public void saveReading(Reading reading) {
 		mongoTemplate.insert(reading, collectionName);
 	}
+	
 
-	public List<MinMaxAvgDTO> getMinMaxAvg(Criteria criteria) {
+	private List<MinMaxAvgDTO> getMinMaxAvg(Criteria criteria,String level) {
 		AggregationOperation match = Aggregation.match(criteria);
-		GroupOperation group = Aggregation.group(SENSORID_FIELD_NAME).addToSet(VALUE_DIMENSION_FIELD_NAME)
-				.as(VALUE_DIMENSION_FIELD_NAME).addToSet(SENSORID_FIELD_NAME).as(SENSORID_FIELD_NAME)
+		GroupOperation group = Aggregation.group(level,SENSORID_FIELD_NAME,VALUE_DIMENSION_FIELD_NAME)
 				.min(VALUE_FIELD_NAME).as("min").avg(VALUE_FIELD_NAME).as("avg").max(VALUE_FIELD_NAME).as("max")
 				.sum(VALUE_FIELD_NAME).as("sum").count().as("count");
 		Aggregation agg = newAggregation(match, group);
 		AggregationResults<MinMaxAvgDTO> results = mongoTemplate.aggregate(agg, collectionName, MinMaxAvgDTO.class);
 		return results.getMappedResults();
 	}
-
-	public List<MinMaxAvgDTO> reduceMinMaxAvg(Criteria criteria) {
-		String mapFunction = "function () { "
-				+ "emit(this.sensorId, {sensorId:this.sensorId,min: parseFloat(this.value), max: parseFloat(this.value), avg: parseFloat(this.value), sum:parseFloat(this.value), count:1} )}";
-		String reduceFunction = "function (key, values) {"
-				+ " var result = {avg: 0.0, sum: 0, count: 0.0, min: values[0].min, max: values[0].max, sensorId:values[0].sensorId};"
-				+ " values.forEach(function(value){ " + " result.count += value.count; " + "result.sum += value.sum; "
-				+ "if (value.max > result.max) { result.max = value.max }; "
-				+ "if (value.min < result.min) { result.min = value.min }; " + "}); "
-				+ " result.avg = result.sum / result.count; " + " return result; " + " }";
-		BasicQuery query = new BasicQuery("{}");
-		List<MinMaxAvgDTO> result = new ArrayList<MinMaxAvgDTO>();
-		query.addCriteria(criteria);
-		MapReduceResults<MinMaxAvgDTO> mrr = mongoTemplate.mapReduce(query, collectionName, mapFunction,
-				reduceFunction, MapReduceOptions.options().outputTypeInline(), MinMaxAvgDTO.class);
-		return null;
-		// return mrr.getRawResults().get("results");
+	
+	public List<MinMaxAvgDTO> getMinMaxAvgDay(Criteria criteria) {
+		return getMinMaxAvg(criteria, "hour");
 	}
+
+	public List<MinMaxAvgDTO> getMinMaxAvgMonth(Criteria criteria) {
+		return getMinMaxAvg(criteria, "day");
+	}
+	
+	public List<MinMaxAvgDTO> getMinMaxAvgYear(Criteria criteria) {
+		return getMinMaxAvg(criteria, "month");
+	}
+
+
+	
 
 	public List<Map> findAllReadings(String queryString) {
 		final BasicQuery query = new BasicQuery(queryString);
