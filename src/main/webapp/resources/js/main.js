@@ -21,7 +21,11 @@
 	  setDefaults();
 	  setupCallbacks();
 	  addCriteria();
-	  loadData();	  
+	  loadData();	
+	  $("#datetime").change(function(){
+		  addCriteria();
+		  loadData();
+	  })
   }
   
   function setupCallbacks(){
@@ -37,13 +41,17 @@
 	  loadData();
   }
   
+  
+  
   function addCriteria(){
-	  addCreatedCriteria(document.getElementById("date").value);
+	  addCreatedCriteria(document.getElementById("datetime").value);
   }
   
   function setDefaults(){
-
-	  document.getElementById("date").valueAsDate = new Date();
+	  d = new Date();
+	  ds = d.toISOString();
+	  ds = ds.substring(0,ds.length-13)+d.toLocaleTimeString();
+	  document.getElementById("datetime").value = ds;
   }
   
   function applyDataFilters(){
@@ -63,7 +71,7 @@
 	  switch (chartType) {
 	  case 'H' : 
 	  		createHourChart(chartData,ctx);
-	  		headerElement.html("Hodinový přehled");
+	  		headerElement.html("Hodinový pehled");
 	  		break;
 	  case 'D' : 
 	  		createDayChart(chartData,ctx);
@@ -84,12 +92,17 @@
     	  
   }
   
-  function addCreatedCriteria(selectedDate) {
+  function addCreatedCriteria(selectedDate,selectedTime) {
 	  
 	  
 	  switch (chartType) {
 	  case 'H' : 
-		  	
+		  	fromDate = new Date(selectedDate);
+		  	fromDate.setHours(fromDate.getHours(),0,0,0);
+		  	toDate = new Date(selectedDate);
+		  	toDate.setHours(toDate.getHours(),59,59,0);
+		  	qs.fromTime=fromDate.getTime();
+		  	qs.toTime=toDate.getTime();
 	  		break;
 	  case 'D' :
 		  	fromDate = new Date(selectedDate);
@@ -108,11 +121,11 @@
 		  	toDate.setDate(getNumberOfDays(fromDate.getYear(), fromDate.getMonth()));
 		  	qs.fromTime=fromDate.getTime();
 		  	qs.toTime=toDate.getTime();
-		  break;
+		  	break;
 	  case 'Y' :
-		  break;  
-		  qs.dataScope=chartType;	  
+		  break;    
 	  }
+	  qs.dataScope=chartType;	
   }
 
   
@@ -131,7 +144,7 @@
   
   function refreshDataTable(){
 	 tableBody = $("#dataTable tbody"); 
-	 for(var i in chartData.readings){
+	 for(i=0;i<chartData.readings.length;i++){
 		 reading = chartData.readings[i];
 		 created = new Date(reading.created);
 		 row="<tr><td>"+created.toLocaleString()+"</td><td>"+reading.nodeName+"</td><td>"+reading.sensorId+"</td><td>"+reading.value+reading.valueDimension+"</td></tr>";
@@ -143,10 +156,41 @@
   	function getMinMaxAvgValue(what){
   		var out="";
   		if(chartData.minMaxAvgDTO.length!=0) {
-  			 for(var i in chartData.minMaxAvgDTO) {
-  				 dto = sourceData.minMaxAvgDTO[i];
-  				 out+=dto.sensorId+":<strong>"+dto[what]+dto.valueDimension+"</strong><br>";
+  			sensorIds = [];
+  			for(i=0;i<chartData.minMaxAvgDTO.length;i++) {
+ 				 sensorIds.push(chartData.minMaxAvgDTO[i].sensorId);
+ 				 
+ 			 }
+  			 sensorIds=sensorIds.getUnique();
+  			 
+  			 for(j=0;j<sensorIds.length;j++) {
+  				 min = 100;
+  				 max = -100;
+  				 avg = 0;
+  				 sum = 0;
+  				 count = 0;
+  				for(k=0;k<chartData.minMaxAvgDTO.length;k++) {
+  					dto = sourceData.minMaxAvgDTO[k];
+  	 				if(dto.sensorId==sensorIds[j])  {
+  	 					if(min> dto.min) min = dto.min;
+  	 					if(max< dto.max) max = dto.max;
+  	 					count++;
+  	 					sum+=dto.avg;
+  	 					
+  	 				}
+  	 			 }
+  				avg=sum/count;
+  				
+  				dout={};
+  				dout.min=min;
+  				dout.max=max;
+  				dout.avg=avg;
+  				 
+  				out+=sensorIds[j]+":<strong>"+dout[what]+dto.valueDimension+"</strong><br>";
   			 }
+  			 
+  			
+
   		return out;
   		} else {
   			return 0;
@@ -157,7 +201,7 @@
 
       function createYearChart(data,ctx){
         var chartData = {};
-        chartData.labels=["Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec"];
+        chartData.labels=["Leden","Ăšnor","BĹ™ezen","Duben","KvÄ›ten","ÄŚerven","ÄŚervenec","Srpen","ZĂˇĹ™Ă­","Ĺ�Ă­jen","Listopad","Prosinec"];
         chartData.datasets=getDatasets(data,"Y");
         console.log(chartData);
         new Chart(ctx).Line(chartData,chartOptions);
@@ -195,7 +239,7 @@
       plotData=[];
         
        
-        for(var r in data.sensorIds) {
+        for(r=0;r<data.sensorIds.length;r++) {
           sensorId=data.sensorIds[r];
           dataSets[r] = {
               fillColor : fillColors[r],
@@ -226,12 +270,12 @@
 
     function getYearPlotData(data, sensorId) {
       returnDataSet=[0,0,0,0,0,0,0,0,0,0,0,0];
-      for(var i in data) {
+      for(i=0;i<data.length;i++) {
         entry = data[i];
         //console.log(entry);
         var date = new Date(entry.created);
         var monthIndex = date.getMonth();
-        for(var j in entry.readings) {
+        for(j=0;j<entry.readings.length;j++) {
           reading = entry.readings[j];
           if(reading.sensorId==sensorId) {
             returnDataSet[monthIndex]=reading.value;
@@ -248,18 +292,12 @@
       for (var i = nod - 1; i >= 0; i--) {
         returnDataSet.push(0);
       };
-      entries = data.readings;
-      for(var i in entries) {
+      entries = data.minMaxAvgDTO;
+      for(i=0;i<entries.length;i++) {
         entry = entries[i];
-        var date = new Date(entry.created);
-        var dayIndex = date.getDate()-1;
-        for(var j in entry.readings) {
-          reading = entry.readings[j];
-          if(reading.sensorId==sensorId) {
-            returnDataSet[dayIndex]=reading.value;
+          if(entry.sensorId==sensorId) {
+            returnDataSet[entry.day-1]=entry.avg;
           }
-        } 
-
       }
       return returnDataSet;
 
@@ -269,7 +307,7 @@
 function getDayPlotData(data,sensorId) {
       returnDataSet=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
       entries = data.readings;
-      for(var i in entries) {
+      for(i=0;i<entries.length;i++) {
         entry = entries[i];
         //console.log(entry);
         var date = new Date(entry.created);
@@ -285,16 +323,13 @@ function getDayPlotData(data,sensorId) {
 function getHourPlotData(data,sensorId){
       returnDataSet=[0,0,0,0,0,0,0,0,0,0,0,0];
       entries = data.readings;
-      for(var i in entries) {
+      for(i=0;i<entries.length;i++) {
         entry = entries[i];
-        var date = new Date(entry.created);
-        var minuteIndex=getMinuteIndex(date);
-        for(var j in entry.readings) {
-          reading = entry.readings[j];
+        var minuteIndex=getMinuteIndex(entry.minute);
+        
           if(reading.sensorId==sensorId) {
             returnDataSet[minuteIndex]=reading.value;
-          }
-        } 
+          } 
       }
        return returnDataSet;
     }

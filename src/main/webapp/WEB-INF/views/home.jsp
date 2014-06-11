@@ -40,8 +40,8 @@
         <div class="row">
           <div class="col-xs-4 col-md-2">
           	<div class="form-group">
-    <label for="date">Datum</label>
-    <input type="date" class="form-control" id="date">
+    <label for="datetime">Datum</label>
+    <input type="datetime-local" class="form-control" id="datetime">
   </div>
             <h2>Přehledy</h2>
             <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('H');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>Hodinový</a><br>

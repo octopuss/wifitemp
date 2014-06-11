@@ -81,12 +81,21 @@ public class ReadingRepository {
 
 	private List<MinMaxAvgDTO> getMinMaxAvg(Criteria criteria,String level) {
 		AggregationOperation match = Aggregation.match(criteria);
-		GroupOperation group = Aggregation.group(level,SENSORID_FIELD_NAME,VALUE_DIMENSION_FIELD_NAME)
-				.min(VALUE_FIELD_NAME).as("min").avg(VALUE_FIELD_NAME).as("avg").max(VALUE_FIELD_NAME).as("max")
+		GroupOperation go;
+		if(level==null){
+		go =Aggregation.group(SENSORID_FIELD_NAME,VALUE_DIMENSION_FIELD_NAME);
+		} else {
+			go =Aggregation.group(level,SENSORID_FIELD_NAME,VALUE_DIMENSION_FIELD_NAME);
+		}
+		GroupOperation group = go.min(VALUE_FIELD_NAME).as("min").avg(VALUE_FIELD_NAME).as("avg").max(VALUE_FIELD_NAME).as("max")
 				.sum(VALUE_FIELD_NAME).as("sum").count().as("count");
 		Aggregation agg = newAggregation(match, group);
 		AggregationResults<MinMaxAvgDTO> results = mongoTemplate.aggregate(agg, collectionName, MinMaxAvgDTO.class);
 		return results.getMappedResults();
+	}
+	
+	public List<MinMaxAvgDTO> getMinMaxAvgHour(Criteria criteria) {
+		return getMinMaxAvg(criteria, null);
 	}
 	
 	public List<MinMaxAvgDTO> getMinMaxAvgDay(Criteria criteria) {

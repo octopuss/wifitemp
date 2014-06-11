@@ -1,12 +1,11 @@
-function getMinuteIndex(date){
-      minute = date.getMinutes();
+function getMinuteIndex(minute){
       return Math.floor(minute/5);
     }
 
 function getDateLabels(month, year) {
         labels = [];
         days = getDaysInMonth(month,year);
-        for(var i in days) {
+        for( i=0;i<days.length;i++) {
           day = days[i];
           labels.push(day.getDate()+"."+day.getMonth()+"."+day.getFullYear());
         }
@@ -29,3 +28,14 @@ function getDaysInMonth(month, year) {
      return days;
 }
 
+Array.prototype.getUnique = function(){
+	   var u = {}, a = [];
+	   for(var i = 0, l = this.length; i < l; ++i){
+	      if(u.hasOwnProperty(this[i])) {
+	         continue;
+	      }
+	      a.push(this[i]);
+	      u[this[i]] = 1;
+	   }
+	   return a;
+	}

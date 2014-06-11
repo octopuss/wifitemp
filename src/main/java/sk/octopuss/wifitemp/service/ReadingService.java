@@ -25,7 +25,7 @@ public class ReadingService {
 		result.setNodeNames(readingRepository.findDistinct(criteria, "nodeName"));
 		result.setSensorIds(readingRepository.findDistinct(criteria, "sensorId"));
 		if(datascope.equals("H")) {
-		//result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgHour(criteria));
+		result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgHour(criteria));
 		}
 		if(datascope.equals("D")) {
 			result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgDay(criteria));
