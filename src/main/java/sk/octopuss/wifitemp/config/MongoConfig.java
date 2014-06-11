@@ -1,38 +1,56 @@
 package sk.octopuss.wifitemp.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.core.convert.CustomConversions;
 
+import sk.octopuss.wifitemp.config.converters.BigDecimalToDoubleConverter;
+import sk.octopuss.wifitemp.config.converters.DoubleToBigDecimalConverter;
+
+import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoURI;
+import com.mongodb.MongoClientURI;
 
 @Configuration
 @PropertySource("classpath:db.properties")
-public class MongoConfig {
+public class MongoConfig extends AbstractMongoConfiguration {
 
 	@Autowired
 	Environment env;
 
-	public @Bean
-	MongoDbFactory mongoDbFactory() throws Exception {
+	@Override
+	protected String getDatabaseName() {
 		if (System.getenv("MONGOHQ_URL") != null) {
-			return new SimpleMongoDbFactory(new MongoURI(System.getenv("MONGOHQ_URL")));
+			return System.getenv("MONGOHQ_URL");
 		} else {
-			return new SimpleMongoDbFactory(new MongoClient(env.getProperty("db.url")), env.getProperty("db.name"));
+			return env.getProperty("db.name");
 		}
 	}
 
-	public @Bean
-	MongoTemplate mongoTemplate() throws Exception {
+	@Override
+	public Mongo mongo() throws Exception {
+		if (System.getenv("MONGOHQ_URL") != null) {
+			return new MongoClient(new MongoClientURI(System.getenv("MONGOHQ_URL")));
+		} else {
+			return new MongoClient(env.getProperty("db.url"));
+		}
+	}
 
-		MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
-		return mongoTemplate;
+	@Bean
+	@Override
+	public CustomConversions customConversions() {
+		List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
+		converterList.add(new BigDecimalToDoubleConverter());
+		converterList.add(new DoubleToBigDecimalConverter());
+		return new CustomConversions(converterList);
 	}
 
 }

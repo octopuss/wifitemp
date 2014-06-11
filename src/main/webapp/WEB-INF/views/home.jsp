@@ -44,10 +44,10 @@
     <input type="date" class="form-control" id="date">
   </div>
             <h2>Přehledy</h2>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="loadData(null,createHourChart);"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>Hodinový</a><br>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick=" loadData(null,createDayChart);"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-time"></span>Denní</a><br>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="loadData(null,createMonthChart);"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-calendar"></span>Měsíční</a><br>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="loadData(null,createYearChart);"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-stats"></span>Roční</a><br>
+            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('H');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>Hodinový</a><br>
+            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('D');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-time"></span>Denní</a><br>
+            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('M');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-calendar"></span>Měsíční</a><br>
+            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('Y');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-stats"></span>Roční</a><br>
             <div class="alert alert-warning" style="text-align:center">
               <strong>Aktuální teplota</strong>
               <h2>33°C</h2>
@@ -64,40 +64,23 @@
                   <canvas id="temperatureChart" width="1000" height="400"></canvas>
                 </div>
                 <div class="col-xs-4 col-md-2">
-                  <div class="alert alert-info">Nejnižší: <strong class="minValue">15.2°C</strong></div>
-                  <div class="alert alert-warning">Průměrná: <strong class="avgValue">17.2°C</strong></div>
-                  <div class="alert alert-danger">Nejvyšší: <strong class="maxValue">25.2°C</strong></div>
+                  <div class="alert alert-info">Nejnižší:<br><span class="minValue"><strong>15.2°C</strong></span></div>
+                  <div class="alert alert-warning">Průměrná:<br><span class="avgValue"><strong>17.2°C</strong></span></div>
+                  <div class="alert alert-danger">Nejvyšší:<br><span class="maxValue"><strong>25.2°C</strong></span></div>
                 </div>
               </div>
             </div>
-            <table class="table table-striped">
+            <table class="table table-striped" id="dataTable">
       <thead>
         <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
+          <th>Date</th>
+          <th>Node</th>
+          <th>Sensor</th>
+          <th>Value</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
+        
       </tbody>
     </table>
           </div>

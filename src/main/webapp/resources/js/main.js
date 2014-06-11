@@ -4,11 +4,14 @@
   strokeColors=["rgba(220,220,220,1)", "rgba(151,187,205,1)"];
   pointColors=["rgba(220,220,220,1)","rgba(151,187,205,1)"];
   chartOptions={};
+  filters={};
+  qs={};
   chartOptions.datasetFill =false;
   chartOptions.showTooltips=true;
   dataUpdatedCallbacks=$.Callbacks();
   
   chartType='D';
+  sourceData={};
   chartData={};
   
   $(document).ready(init);
@@ -17,13 +20,25 @@
   function init(){
 	  setDefaults();
 	  setupCallbacks();
-	  loadData(null);	  
+	  addCriteria();
+	  loadData();	  
   }
   
   function setupCallbacks(){
 	  dataUpdatedCallbacks.add(applyDataFilters);
 	  dataUpdatedCallbacks.add(refreshChart);
 	  dataUpdatedCallbacks.add(refreshMinMaxAvg);
+	  dataUpdatedCallbacks.add(refreshDataTable);
+  }
+  
+  function switchChartType(newChartType){
+	  chartType=newChartType;
+	  addCriteria();
+	  loadData();
+  }
+  
+  function addCriteria(){
+	  addCreatedCriteria(document.getElementById("date").value);
   }
   
   function setDefaults(){
@@ -32,13 +47,14 @@
   }
   
   function applyDataFilters(){
+	  chartData=sourceData;
 	  console.log("TODO apply filters");
   }
   
   function refreshMinMaxAvg(){
-	  $(".alert .minValue").html(getMinValue());
-	  $(".alert .avgValue").html(getAvgValue());
-	  $(".alert .maxValue").html(getMaxValue());
+	  $(".alert span.minValue").html(getMinMaxAvgValue('min'));
+	  $(".alert span.avgValue").html(getMinMaxAvgValue('avg'));
+	  $(".alert span.maxValue").html(getMinMaxAvgValue('max'));
   }
   
   function refreshChart(){
@@ -68,31 +84,76 @@
     	  
   }
   
+  function addCreatedCriteria(selectedDate) {
+	  
+	  
+	  switch (chartType) {
+	  case 'H' : 
+		  	
+	  		break;
+	  case 'D' :
+		  	fromDate = new Date(selectedDate);
+		  	fromDate.setHours(0,0,0,0);
+		  	toDate = new Date(selectedDate);
+		  	toDate.setHours(23,59,59,0);
+		  	qs.fromTime=fromDate.getTime();
+		  	qs.toTime=toDate.getTime();
+		  	break;
+	  case 'M' :
+		  	fromDate = new Date(selectedDate);
+		  	fromDate.setHours(0,0,0,0);
+		  	fromDate.setDate(1);
+		  	toDate = new Date(selectedDate);
+		  	toDate.setHours(23,59,59,0);
+		  	toDate.setDate(getNumberOfDays(fromDate.getYear(), fromDate.getMonth()));
+		  	qs.fromTime=fromDate.getTime();
+		  	qs.toTime=toDate.getTime();
+		  break;
+	  case 'Y' :
+		  break;  
+		  qs.dataScope=chartType;	  
+	  }
+  }
+
+  
   function fireDataUpdated(data) {
-	  chartData=data;
+	  sourceData=data;
 	  dataUpdatedCallbacks.fire();
   }
   
   
-  function loadData(criteria,callback){
+  function loadData(callback){
 	  if(callback===undefined) {
 		  callback = fireDataUpdated;
 	  }
-	  $.ajax({url:window.app.ROOT_URL+"/data",datatype:"jsonp", success:callback});
+	  $.ajax({url:window.app.ROOT_URL+"/data",data:qs,datatype:"jsonp", success:callback});
+  }
+  
+  function refreshDataTable(){
+	 tableBody = $("#dataTable tbody"); 
+	 for(var i in chartData.readings){
+		 reading = chartData.readings[i];
+		 created = new Date(reading.created);
+		 row="<tr><td>"+created.toLocaleString()+"</td><td>"+reading.nodeName+"</td><td>"+reading.sensorId+"</td><td>"+reading.value+reading.valueDimension+"</td></tr>";
+		 tableBody.append(row);
+		 
+	 }
   }
 
-  	function getMinValue(){
-  		
+  	function getMinMaxAvgValue(what){
+  		var out="";
+  		if(chartData.minMaxAvgDTO.length!=0) {
+  			 for(var i in chartData.minMaxAvgDTO) {
+  				 dto = sourceData.minMaxAvgDTO[i];
+  				 out+=dto.sensorId+":<strong>"+dto[what]+dto.valueDimension+"</strong><br>";
+  			 }
+  		return out;
+  		} else {
+  			return 0;
+  		}
   	}
   	
-  	function getMaxValue(){
-  		
-  	}
-      
-  	function getAvgValue(){
-  		
-  	}
- 
+  
 
       function createYearChart(data,ctx){
         var chartData = {};
@@ -104,8 +165,8 @@
 
       function createMonthChart(data,ctx){
         var chartData = {};
-        var date = new Date(data[0]._id.time);
-        chartData.labels = getDateLabels(date.getMonth(), date.getFullYear());
+        var date = new Date(data.readings[0].created);
+        chartData.labels = getDateLabels(date.getMonth()+1, date.getFullYear());
         chartData.datasets = getDatasets(data, "M");
         console.log(chartData);
         new Chart(ctx).Line(chartData,chartOptions);
@@ -134,8 +195,8 @@
       plotData=[];
         
        
-        for(var r in data[0].readings) {
-          sensorId=data[0].readings[r].sensorId;
+        for(var r in data.sensorIds) {
+          sensorId=data.sensorIds[r];
           dataSets[r] = {
               fillColor : fillColors[r],
               strokeColor : strokeColors[r],
@@ -181,15 +242,16 @@
     }
 
     function getMonthPlotData(data, sensorId) {
-      var d = new Date(data[0].created);
+      var d = new Date(data.readings[0].created);
       nod = getNumberOfDays(d.getFullYear(),d.getMonth());
       returnDataSet =[];
       for (var i = nod - 1; i >= 0; i--) {
         returnDataSet.push(0);
       };
-      for(var i in data) {
-        entry = data[i];
-        var date = new Date(entry._id.time);
+      entries = data.readings;
+      for(var i in entries) {
+        entry = entries[i];
+        var date = new Date(entry.created);
         var dayIndex = date.getDate()-1;
         for(var j in entry.readings) {
           reading = entry.readings[j];
@@ -204,25 +266,25 @@
     }
 
 
-function getDayPlotData(entries,sensorId) {
+function getDayPlotData(data,sensorId) {
       returnDataSet=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      entries = data.readings;
       for(var i in entries) {
         entry = entries[i];
         //console.log(entry);
         var date = new Date(entry.created);
         var hourIndex = date.getHours()-1;
-        for(var j in entry.readings) {
-          reading = entry.readings[j];
-          if(reading.sensorId==sensorId) {
-            returnDataSet[hourIndex]=reading.value;
+          
+          if(entry.sensorId==sensorId) {
+            returnDataSet[hourIndex]=entry.value;
           }
-        } 
       }
       return returnDataSet;
     }
 
-function getHourPlotData(entries,sensorId){
+function getHourPlotData(data,sensorId){
       returnDataSet=[0,0,0,0,0,0,0,0,0,0,0,0];
+      entries = data.readings;
       for(var i in entries) {
         entry = entries[i];
         var date = new Date(entry.created);

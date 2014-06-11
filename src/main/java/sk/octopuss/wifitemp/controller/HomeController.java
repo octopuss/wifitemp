@@ -6,7 +6,6 @@ import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,40 +16,40 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import sk.octopuss.wifitemp.domain.Entry;
+import sk.octopuss.wifitemp.domain.QueryResult;
 import sk.octopuss.wifitemp.domain.Reading;
 import sk.octopuss.wifitemp.domain.Reading.ReadingType;
-import sk.octopuss.wifitemp.repository.EntryRepository;
-import sk.octopuss.wifitemp.util.JSONUtils;
+import sk.octopuss.wifitemp.repository.ReadingRepository;
+import sk.octopuss.wifitemp.service.ReadingService;
 
 @Controller
 public class HomeController {
 
 	@Autowired
-	EntryRepository entryRepository;
+	ReadingService readingService;
+
+	@Autowired
+	ReadingRepository readingRepository;
 
 	private String DEFAULT_JSON = "{}";
+
+	private String DEFAULT_DATA_SCOPE = "H";
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
 	@RequestMapping(value = "/data", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Entry> data(@RequestParam(value = "queryString", required = false) String queryString)
-			throws IOException {
-		if (StringUtils.isEmpty(queryString)) {
-			queryString = DEFAULT_JSON;
+	public QueryResult data(@RequestParam(value = "dataScope", required = false) String dataScope,
+			@RequestParam(value = "fromTime", required = false) Long fromTime,
+			@RequestParam(value = "toTime", required = false) Long toTime) throws IOException {
+		if (StringUtils.isEmpty(dataScope)) {
+			dataScope = DEFAULT_DATA_SCOPE;
 		}
-		if (JSONUtils.isValidJSON(queryString)) {
+		if (dataScope.equals("H")) {
+			return readingService.findAllInHour(fromTime, toTime);
+		}
 
-			return entryRepository.findAllEntries(queryString);
-		}
 		return null;
-	}
-
-	@RequestMapping(value = "/projection", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public List<Entry> eee(@RequestParam(value = "queryString", required = false) String queryString) {
-		return entryRepository.findAllEntries("{},{\"readings\" : { $elemMatch: { \"sensorId\": \"temp#1\" }}}");
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -64,34 +63,25 @@ public class HomeController {
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
 	public String save() {
 		for (int i = 0; i < 500; i++) {
-			entryRepository.saveEntry(randomEntry());
+			readingRepository.saveReading(randomReading());
 		}
 		return "redirect:home";
 	}
 
-	private Entry randomEntry() {
-		Entry entry = new Entry();
+	private Reading randomReading() {
+		Reading reading = new Reading();
 		long offset = Timestamp.valueOf("2014-01-01 00:00:00").getTime();
 		long end = Timestamp.valueOf("2015-01-01 00:00:00").getTime();
 		long diff = end - offset + 1;
 		Timestamp rand = new Timestamp(offset + (long) (Math.random() * diff));
-		entry.setCreated(rand);
-		entry.setNetworkId("Jungmannova");
-		entry.setNodeId("jung1405");
-		entry.setNodeName("Jungmannova 1405");
-		Reading reading = new Reading();
+		reading.setCreated(rand);
+		reading.setNodeId("jung1405");
+		reading.setNodeName("Jungmannova 1405");
 		reading.setReadingType(ReadingType.TEMPERATURE);
 		reading.setValue(randomTemperature("35"));
 		reading.setValueDimension("°C");
 		reading.setSensorId("temp01");
-		entry.getReadings().add(reading);
-		Reading reading2 = new Reading();
-		reading2.setReadingType(ReadingType.TEMPERATURE);
-		reading2.setValue(randomTemperature("35"));
-		reading2.setValueDimension("°C");
-		reading2.setSensorId("temp02");
-		entry.getReadings().add(reading2);
-		return entry;
+		return reading;
 
 	}
 
