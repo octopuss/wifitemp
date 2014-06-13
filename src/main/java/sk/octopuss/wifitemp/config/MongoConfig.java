@@ -29,7 +29,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
 	@Override
 	protected String getDatabaseName() {
 		if (System.getenv("MONGOHQ_URL") != null) {
-			return System.getenv("MONGOHQ_URL");
+			return "app24571573";
 		} else {
 			return env.getProperty("db.name");
 		}
