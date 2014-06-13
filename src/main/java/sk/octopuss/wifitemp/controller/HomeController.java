@@ -97,7 +97,7 @@ public class HomeController {
 		reading.setNodeName("Jungmannova 1405");
 		reading.setReadingType(ReadingType.TEMPERATURE);
 		reading.setValue(randomTemperature("35"));
-		reading.setValueDimension("°C");
+		reading.setValueDimension("\u00B0C");
 		reading.setSensorId("temp01");
 		return reading;
 
