@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import sk.octopuss.wifitemp.domain.QueryResult;
 import sk.octopuss.wifitemp.domain.Reading;
-import sk.octopuss.wifitemp.domain.AbstractReading.ReadingType;
+import sk.octopuss.wifitemp.domain.Reading.ReadingType;
 import sk.octopuss.wifitemp.repository.ReadingRepository;
 import sk.octopuss.wifitemp.service.ReadingService;
 
@@ -58,11 +58,32 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
-	public String save() {
-		for (int i = 0; i < 500; i++) {
-			readingRepository.saveReading(randomReading());
+	public String save(@RequestParam(value = "ip", required=false)String sourceIpAddress, @RequestParam(value ="readings", required=false) String readingPairs) {
+		String readings[] = readingPairs.split(";");
+		for (int i = 0; i < readings.length; i++) {
+			Reading reading = new Reading();
+			String pair[] = readings[i].split("\\|");
+			setDefaults(reading);
+			reading.setIpAddress(sourceIpAddress);
+			reading.setCreated(new Date());
+			reading.setValue(new BigDecimal(pair[1]));
+			reading.setSensorId(pair[0]);
+			readingRepository.saveReading(reading);
 		}
-		return "redirect:home";
+		
+//		for (int i = 0; i < 500; i++) {
+//			readingRepository.saveReading(randomReading());
+//		}
+//		return "redirect:home";
+		return "home";
+	}
+	
+	private void setDefaults(Reading reading) {
+		reading.setNodeId("jung1405");
+		reading.setNodeName("Jungmannova 1405");
+		reading.setReadingType(ReadingType.TEMPERATURE);
+		reading.setValue(randomTemperature("35"));
+		reading.setValueDimension("°C");
 	}
 
 	private Reading randomReading() {

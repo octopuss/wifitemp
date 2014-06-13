@@ -98,16 +98,19 @@
 	  switch (chartType) {
 	  case 'H' : 
 		  	fromDate = new Date(selectedDate);
-		  	fromDate.setHours(fromDate.getHours(),0,0,0);
+		  	fromDate.setHours(fromDate.getHours()-2,0,0,0);
 		  	toDate = new Date(selectedDate);
-		  	toDate.setHours(toDate.getHours(),59,59,0);
+		  	toDate.setHours(toDate.getHours()-2,59,59,0);
 		  	qs.fromTime=fromDate.getTime();
 		  	qs.toTime=toDate.getTime();
 	  		break;
 	  case 'D' :
 		  	fromDate = new Date(selectedDate);
+		  	fromDate.setDate(fromDate.getDate()-1);
 		  	fromDate.setHours(0,0,0,0);
+		  	
 		  	toDate = new Date(selectedDate);
+		  	toDate.setDate(toDate.getDate()-1);
 		  	toDate.setHours(23,59,59,0);
 		  	qs.fromTime=fromDate.getTime();
 		  	qs.toTime=toDate.getTime();
@@ -327,8 +330,8 @@ function getHourPlotData(data,sensorId){
         entry = entries[i];
         var minuteIndex=getMinuteIndex(entry.minute);
         
-          if(reading.sensorId==sensorId) {
-            returnDataSet[minuteIndex]=reading.value;
+          if(entry.sensorId==sensorId) {
+            returnDataSet[minuteIndex]=entry.value;
           } 
       }
        return returnDataSet;
