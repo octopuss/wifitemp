@@ -62,7 +62,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/clear", method=RequestMethod.GET)
-	public String deleteAll(){
+	public void deleteAll(){
 		readingRepository.deleteAll();
 	}
 
