@@ -60,6 +60,11 @@ public class HomeController {
 		mav.setViewName("home");
 		return mav;
 	}
+	
+	@RequestMapping(value="/clear", method=RequestMethod.GET)
+	public String deleteAll(){
+		readingRepository.deleteAll();
+	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
 	public String save(@RequestParam(value = "ip", required=false)String sourceIpAddress, @RequestParam(value ="readings", required=false) String readingPairs) {

@@ -119,4 +119,9 @@ public class ReadingRepository {
 		return readings;
 	}
 
+	public void deleteAll() {
+		mongoTemplate.remove(new BasicQuery(""), collectionName);
+		
+	}
+
 }
