@@ -100,9 +100,9 @@
 	  switch (chartType) {
 	  case 'H' : 
 		  	fromDate = new Date(formatedSelectedDate);
-		  	fromDate.setHours(fromDate.getHours()-2,0,0,0);
+		  	fromDate.setHours(fromDate.getHours(),0,0,0);
 		  	toDate = new Date(formatedSelectedDate);
-		  	toDate.setHours(toDate.getHours()-2,59,59,0);
+		  	toDate.setHours(toDate.getHours(),59,59,0);
 		  	qs.fromTime=fromDate.getTime();
 		  	qs.toTime=toDate.getTime();
 	  		break;
