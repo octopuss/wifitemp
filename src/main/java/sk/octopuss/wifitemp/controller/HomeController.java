@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class HomeController {
 	private String DEFAULT_DATA_SCOPE = "D";
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+	
 
 	@RequestMapping(value = "/data", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
@@ -52,6 +55,7 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home() {
 		ModelAndView mav = new ModelAndView();
+		sdf.setTimeZone(TimeZone.getTimeZone("Europe/Prague"));
 		mav.addObject("generatedDate", sdf.format(new Date()));
 		mav.setViewName("home");
 		return mav;
@@ -65,7 +69,7 @@ public class HomeController {
 			String pair[] = readings[i].split("\\|");
 			setDefaults(reading);
 			reading.setIpAddress(sourceIpAddress);
-			reading.setCreated(new Date());
+			reading.setCreated(Calendar.getInstance(TimeZone.getTimeZone("Europe/Prague")).getTime());
 			reading.setValue(new BigDecimal(pair[1]));
 			reading.setSensorId(pair[0]);
 			readingRepository.saveReading(reading);
