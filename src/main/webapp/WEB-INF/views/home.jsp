@@ -22,8 +22,17 @@
         </script>
           <spring:url value="/resources/js/utils.js" var="utils_js_url"/>
             <script src="${utils_js_url}"></script>
+            <spring:url value="/resources/js/datepicker/jquery.datetimepicker.js" var="dp_js_url"/>
+            <script src="${dp_js_url}"></script>
+            
+            <spring:url value="/resources/js/moment.min.js" var="moment_js_url"/>
+            <script src="${moment_js_url}"></script>
         <spring:url value="/resources/js/main.js" var="main_js_url"/>
+        
             <script src="${main_js_url}"></script>
+            
+     <spring:url value="/resources/js/datepicker/jquery.datetimepicker.css" var="dp_css_url"/>
+        <link rel="stylesheet" href="${dp_css_url}" />       
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -41,7 +50,7 @@
           <div class="col-xs-4 col-md-2">
           	<div class="form-group">
     <label for="datetime">Datum</label>
-    <input type="datetime-local" class="form-control" id="datetime">
+    <input type="text" class="form-control" id="datetime">
   </div>
             <h2>Přehledy</h2>
             <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('H');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>Hodinový</a><br>

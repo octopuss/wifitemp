@@ -22,6 +22,10 @@
 	  setupCallbacks();
 	  addCriteria();
 	  loadData();	
+	  $('#datetime').datetimepicker({
+		  format:'d.m.Y H:i',
+		  lang:'cs'
+	  });
 	  $("#datetime").change(function(){
 		  addCriteria();
 		  loadData();
@@ -48,10 +52,7 @@
   }
   
   function setDefaults(){
-	  d = new Date();
-	  ds = d.toISOString();
-	  ds = ds.substring(0,ds.length-13)+d.toLocaleTimeString();
-	  document.getElementById("datetime").value = ds;
+	  document.getElementById("datetime").value = moment().format('D.M.YYYY H:m');
   }
   
   function applyDataFilters(){
@@ -94,32 +95,33 @@
   
   function addCreatedCriteria(selectedDate,selectedTime) {
 	  
+	  formatedSelectedDate = moment(selectedDate,'D.M.YYYY H:m');
 	  
 	  switch (chartType) {
 	  case 'H' : 
-		  	fromDate = new Date(selectedDate);
+		  	fromDate = new Date(formatedSelectedDate);
 		  	fromDate.setHours(fromDate.getHours()-2,0,0,0);
-		  	toDate = new Date(selectedDate);
+		  	toDate = new Date(formatedSelectedDate);
 		  	toDate.setHours(toDate.getHours()-2,59,59,0);
 		  	qs.fromTime=fromDate.getTime();
 		  	qs.toTime=toDate.getTime();
 	  		break;
 	  case 'D' :
-		  	fromDate = new Date(selectedDate);
+		  	fromDate = new Date(formatedSelectedDate);
 		  	fromDate.setDate(fromDate.getDate());
 		  	fromDate.setHours(0,0,0,0);
 		  	
-		  	toDate = new Date(selectedDate);
+		  	toDate = new Date(formatedSelectedDate);
 		  	toDate.setDate(toDate.getDate());
 		  	toDate.setHours(23,59,59,0);
 		  	qs.fromTime=fromDate.getTime();
 		  	qs.toTime=toDate.getTime();
 		  	break;
 	  case 'M' :
-		  	fromDate = new Date(selectedDate);
+		  	fromDate = new Date(formatedSelectedDate);
 		  	fromDate.setHours(0,0,0,0);
 		  	fromDate.setDate(1);
-		  	toDate = new Date(selectedDate);
+		  	toDate = new Date(formatedSelectedDate);
 		  	toDate.setHours(23,59,59,0);
 		  	toDate.setDate(getNumberOfDays(fromDate.getYear(), fromDate.getMonth()));
 		  	qs.fromTime=fromDate.getTime();
