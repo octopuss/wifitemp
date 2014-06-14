@@ -106,11 +106,11 @@
 	  		break;
 	  case 'D' :
 		  	fromDate = new Date(selectedDate);
-		  	fromDate.setDate(fromDate.getDate()-1);
+		  	fromDate.setDate(fromDate.getDate());
 		  	fromDate.setHours(0,0,0,0);
 		  	
 		  	toDate = new Date(selectedDate);
-		  	toDate.setDate(toDate.getDate()-1);
+		  	toDate.setDate(toDate.getDate());
 		  	toDate.setHours(23,59,59,0);
 		  	qs.fromTime=fromDate.getTime();
 		  	qs.toTime=toDate.getTime();
