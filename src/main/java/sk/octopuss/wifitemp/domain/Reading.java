@@ -3,6 +3,7 @@ package sk.octopuss.wifitemp.domain;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Reading{
 	
@@ -65,7 +66,7 @@ public class Reading{
 	}
 
 	public void setCreated(Date created) {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Prague"));
 		cal.setTime(created);
 		second = cal.get(Calendar.SECOND);
 		minute = cal.get(Calendar.MINUTE);

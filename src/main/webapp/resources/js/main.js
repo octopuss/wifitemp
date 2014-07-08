@@ -36,7 +36,7 @@
 	  dataUpdatedCallbacks.add(applyDataFilters);
 	  dataUpdatedCallbacks.add(refreshChart);
 	  dataUpdatedCallbacks.add(refreshMinMaxAvg);
-	  dataUpdatedCallbacks.add(refreshDataTable);
+	 // dataUpdatedCallbacks.add(refreshDataTable);
   }
   
   function switchChartType(newChartType){
@@ -128,7 +128,17 @@
 		  	qs.toTime=toDate.getTime();
 		  	break;
 	  case 'Y' :
-		  break;    
+			fromDate = new Date(formatedSelectedDate);
+		  	fromDate.setHours(0,0,0,0);
+		  	fromDate.setDate(1);
+		  	fromDate.setMonth(1);
+		  	toDate = new Date(formatedSelectedDate);
+		  	toDate.setHours(23,59,59,0);
+		  	toDate.setDate(31);
+		  	toDate.setMonth(12)
+		  	qs.fromTime=fromDate.getTime();
+		  	qs.toTime=toDate.getTime();
+		  	break;   
 	  }
 	  qs.dataScope=chartType;	
   }
@@ -206,7 +216,7 @@
 
       function createYearChart(data,ctx){
         var chartData = {};
-        chartData.labels=["Leden","Ăšnor","BĹ™ezen","Duben","KvÄ›ten","ÄŚerven","ÄŚervenec","Srpen","ZĂˇĹ™Ă­","Ĺ�Ă­jen","Listopad","Prosinec"];
+        chartData.labels=["Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec"];
         chartData.datasets=getDatasets(data,"Y");
         console.log(chartData);
         new Chart(ctx).Line(chartData,chartOptions);
@@ -275,17 +285,12 @@
 
     function getYearPlotData(data, sensorId) {
       returnDataSet=[0,0,0,0,0,0,0,0,0,0,0,0];
-      for(i=0;i<data.length;i++) {
-        entry = data[i];
-        //console.log(entry);
-        var date = new Date(entry.created);
-        var monthIndex = date.getMonth();
-        for(j=0;j<entry.readings.length;j++) {
-          reading = entry.readings[j];
-          if(reading.sensorId==sensorId) {
-            returnDataSet[monthIndex]=reading.value;
+      entries = data.minMaxAvgDTO;
+      for(i=0;i<entries.length;i++) {
+        entry = entries[i];
+          if(entry.sensorId==sensorId) {
+            returnDataSet[entry.month-1]=entry.avg;
           }
-        } 
       }
       return returnDataSet;
     }

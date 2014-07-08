@@ -32,15 +32,15 @@
 		<servlet-name>SpringDispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	<filter>
-  <filter-name>cors</filter-name>
-  <filter-class>sk.octopuss.wifitemp.filter.SimpleCorsFilter</filter-class>
- </filter>
+<!-- 	<filter> -->
+<!--   <filter-name>cors</filter-name> -->
+<!--   <filter-class>sk.octopuss.wifitemp.filter.SimpleCorsFilter</filter-class> -->
+<!--  </filter> -->
 
- <filter-mapping>
-  <filter-name>cors</filter-name>
-  <url-pattern>/*</url-pattern>
- </filter-mapping>
+<!--  <filter-mapping> -->
+<!--   <filter-name>cors</filter-name> -->
+<!--   <url-pattern>/*</url-pattern> -->
+<!--  </filter-mapping> -->
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>

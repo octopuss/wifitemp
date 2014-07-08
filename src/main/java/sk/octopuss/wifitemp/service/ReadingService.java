@@ -20,7 +20,7 @@ public class ReadingService {
 		Criteria criteria = readingRepository.getTimeRangeCriteria(fromTime, toTime);
 		List<Reading> readings = readingRepository.findAllInHour(criteria);
 		QueryResult result = new QueryResult();
-		result.setReadings(readings);
+		//result.setReadings(readings);
 		result.setNodeIds(readingRepository.findDistinct(criteria, "nodeId"));
 		result.setNodeNames(readingRepository.findDistinct(criteria, "nodeName"));
 		result.setSensorIds(readingRepository.findDistinct(criteria, "sensorId"));
@@ -32,6 +32,9 @@ public class ReadingService {
 		}
 		if(datascope.equals("M")) {
 			result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgMonth(criteria));
+		}
+		if(datascope.equals("Y")) {
+			result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgYear(criteria));
 		}
 		return result;
 	}

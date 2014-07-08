@@ -53,13 +53,13 @@
     <input type="text" class="form-control" id="datetime">
   </div>
             <h2>Přehledy</h2>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('H');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>Hodinový</a><br>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('D');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-time"></span>Denní</a><br>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('M');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-calendar"></span>Měsíční</a><br>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('Y');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-stats"></span>Roční</a><br>
+            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('H');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>V hodině</a><br>
+            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('D');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-time"></span>Ve dne</a><br>
+            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('M');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-calendar"></span>V měsíci</a><br>
+            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('Y');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-stats"></span>V roce</a><br>
             <div class="alert alert-warning" style="text-align:center">
               <strong>Aktuální teplota</strong>
-              <h2>33°C</h2>
+              <h2 id="latestReading"></h2>
             </div>
             <div>Poslední aktualizace:<br><kbd>${generatedDate}</kbd></div>
           </div>
@@ -73,9 +73,9 @@
                   <canvas id="temperatureChart" width="1000" height="400"></canvas>
                 </div>
                 <div class="col-xs-4 col-md-2">
-                  <div class="alert alert-info">Nejnižší:<br><span class="minValue"><strong>15.2°C</strong></span></div>
-                  <div class="alert alert-warning">Průměrná:<br><span class="avgValue"><strong>17.2°C</strong></span></div>
-                  <div class="alert alert-danger">Nejvyšší:<br><span class="maxValue"><strong>25.2°C</strong></span></div>
+                  <div class="alert alert-info">Nejnižší:<br><span class="minValue"><strong></strong></span></div>
+                  <div class="alert alert-warning">Průměrná:<br><span class="avgValue"><strong></strong></span></div>
+                  <div class="alert alert-danger">Nejvyšší:<br><span class="maxValue"><strong></strong></span></div>
                 </div>
               </div>
             </div>
