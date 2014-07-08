@@ -319,12 +319,9 @@ function getDayPlotData(data,sensorId) {
       entries = data.minMaxAvgDTO;
       for(i=0;i<entries.length;i++) {
         entry = entries[i];
-        //console.log(entry);
-        var date = new Date(entry.created);
-        var hourIndex = date.getHours()-1;
           
           if(entry.sensorId==sensorId) {
-            returnDataSet[hourIndex]=entry.value;
+            returnDataSet[entry.hour]=entry.avg;
           }
       }
       return returnDataSet;
@@ -332,7 +329,7 @@ function getDayPlotData(data,sensorId) {
 
 function getHourPlotData(data,sensorId){
       returnDataSet=[0,0,0,0,0,0,0,0,0,0,0,0];
-      entries = data.minMaxAvgDTO;
+      entries = data.readings;
       for(i=0;i<entries.length;i++) {
         entry = entries[i];
         var minuteIndex=getMinuteIndex(entry.minute);
