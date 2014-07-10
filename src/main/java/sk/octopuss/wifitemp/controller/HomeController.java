@@ -51,6 +51,14 @@ public class HomeController {
 			return readingService.findAllInScope(fromTime, toTime, dataScope);
 
 	}
+	
+	@RequestMapping(value = "/retime", method = RequestMethod.GET)
+	@ResponseBody
+	public String retime() throws IOException {
+			readingService.retimeAll();
+			return "home";
+
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home() {

@@ -1,6 +1,10 @@
 package sk.octopuss.wifitemp.service;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -39,6 +43,17 @@ public class ReadingService {
 			result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgYear(criteria));
 		}
 		return result;
+	}
+
+	public void retimeAll() {
+		List<Reading> readings = readingRepository.findAll();
+
+		for (Reading reading : readings) {
+			reading.setCreated(new Date(reading.getCreated()));
+			readingRepository.update(reading);
+			
+		}
+		
 	}
 	
 	

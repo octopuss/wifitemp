@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.taglibs.standard.lang.jstl.AndOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -18,6 +19,8 @@ import org.springframework.data.mongodb.core.mapreduce.MapReduceOptions;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import sk.octopuss.wifitemp.domain.Reading;
@@ -66,18 +69,15 @@ public class ReadingRepository {
 	}
 
 
-	public List<Reading> findDayAvgInMonth(Long fromTime, Long toTime) {
-		return null;
-	}
-
-	public List<Reading> findMonthAvgInYear(Long fromTime, Long toTime) {
-		return null;
-	}
+	
 
 	public void saveReading(Reading reading) {
 		mongoTemplate.insert(reading, collectionName);
 	}
 	
+	public List<Reading> findAll(){
+		return mongoTemplate.findAll(Reading.class, collectionName);
+	}
 
 	private List<MinMaxAvgDTO> getMinMaxAvg(Criteria criteria,String level) {
 		AggregationOperation match = Aggregation.match(criteria);
@@ -122,6 +122,20 @@ public class ReadingRepository {
 	public void deleteAll() {
 		mongoTemplate.remove(new BasicQuery(""), collectionName);
 		
+	}
+
+	public void update(Reading reading) {
+		Query query = new Query( Criteria.where(CREATED_FIELD_NAME).is(reading.getCreated()));
+		Update update = new Update();
+		update.set("day", Integer.valueOf(reading.getDay()));
+		update.set("month", Integer.valueOf(reading.getMonth()));
+		update.set("year", Integer.valueOf(reading.getYear()));
+		update.set("minute", Integer.valueOf(reading.getMinute()));
+		update.set("hour", Integer.valueOf(reading.getHour()));
+		update.set("second", Integer.valueOf(reading.getSecond()));
+		
+		mongoTemplate.updateFirst(query,update , Reading.class);
+		//System.out.println(reading);
 	}
 
 }

@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "sensorReadings")
 public class Reading{
 	
 	private String valueDimension;
