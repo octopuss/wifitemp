@@ -79,7 +79,8 @@
 	  		headerElement.html("Denní přehled");
 	  		break;
 	  case 'M' :
-	  		createMonthChart(chartData,ctx);
+		  	formatedSelectedDate = moment(document.getElementById("datetime").value,'D.M.YYYY H:m');
+	  		createMonthChart(chartData,ctx,formatedSelectedDate);
 	  		headerElement.html("Měsíční přehled");
 	  		break;
 	  case 'Y' :
@@ -222,9 +223,8 @@
         new Chart(ctx).Line(chartData,chartOptions);
       }
 
-      function createMonthChart(data,ctx){
+      function createMonthChart(data,ctx, date){
         var chartData = {};
-        var date = new Date(data.readings[0].created);
         chartData.labels = getDateLabels(date.getMonth()+1, date.getFullYear());
         chartData.datasets = getDatasets(data, "M");
         console.log(chartData);
