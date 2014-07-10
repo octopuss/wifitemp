@@ -40,7 +40,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
 		if (System.getenv("MONGOHQ_URL") != null) {
 			return new MongoClient(new MongoClientURI(System.getenv("MONGOHQ_URL")));
 		} else {
-			return new MongoClient(env.getProperty("db.url"));
+			return new MongoClient(new MongoClientURI(env.getProperty("db.url")));
 		}
 	}
 

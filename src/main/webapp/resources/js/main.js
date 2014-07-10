@@ -80,7 +80,7 @@
 	  		break;
 	  case 'M' :
 		  	formatedSelectedDate = moment(document.getElementById("datetime").value,'D.M.YYYY H:m');
-	  		createMonthChart(chartData,ctx,formatedSelectedDate);
+	  		createMonthChart(chartData,ctx,new Date(formatedSelectedDate));
 	  		headerElement.html("Měsíční přehled");
 	  		break;
 	  case 'Y' :
