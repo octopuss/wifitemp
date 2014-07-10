@@ -226,7 +226,7 @@
       function createMonthChart(data,ctx, date){
         var chartData = {};
         chartData.labels = getDateLabels(date.getMonth()+1, date.getFullYear());
-        chartData.datasets = getDatasets(data, "M");
+        chartData.datasets = getDatasets(data, "M", date);
         console.log(chartData);
         new Chart(ctx).Line(chartData,chartOptions);
         
@@ -249,7 +249,7 @@
          new Chart(ctx).Line(chartData,chartOptions);
       }
 
-    function getDatasets(data, unit) {
+    function getDatasets(data, unit, date) {
       dataSets=[];
       plotData=[];
         
@@ -261,19 +261,19 @@
               strokeColor : strokeColors[r],
               pointColor : pointColors[r],
               pointStrokeColor : "#fff",
-              data : getPlotData(data, sensorId, unit)
+              data : getPlotData(data, sensorId, unit, date)
         };
       }
       return dataSets;
     }
 
-    function getPlotData(data, sensorId, unit) {
+    function getPlotData(data, sensorId, unit, date) {
       if(unit=="D") {
            return getDayPlotData(data,sensorId);
         }
 
       if(unit=="M") {
-          return getMonthPlotData(data,sensorId);
+          return getMonthPlotData(data,sensorId, date);
         }
       if(unit=="H") {
           return getHourPlotData(data,sensorId);
@@ -295,8 +295,7 @@
       return returnDataSet;
     }
 
-    function getMonthPlotData(data, sensorId) {
-      var d = new Date(data.readings[0].created);
+    function getMonthPlotData(data, sensorId, d) {
       nod = getNumberOfDays(d.getFullYear(),d.getMonth());
       returnDataSet =[];
       for (var i = nod - 1; i >= 0; i--) {
