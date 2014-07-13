@@ -1,5 +1,6 @@
 package sk.octopuss.wifitemp.controller;
 
+import java.util.List;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -58,6 +59,11 @@ public class HomeController {
 			readingService.retimeAll();
 			return "home";
 
+	}
+	@RequestMapping(value = "/latest", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Reading> latest(@RequestParam(value="limit")int limit) {
+		return readingRepository.findLatest(limit);
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)

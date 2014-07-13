@@ -123,6 +123,12 @@ public class ReadingRepository {
 		mongoTemplate.remove(new BasicQuery(""), collectionName);
 		
 	}
+	public List<Reading> findLatest(int limit){
+		Query query = new Query();
+		query.with(new Sort(Sort.Direction.DESC, "created"));
+		query.limit(limit);
+		return mongoTemplate.find(query, Reading.class, collectionName);
+	}
 
 	public void update(Reading reading) {
 		Query query = new Query( Criteria.where(CREATED_FIELD_NAME).is(reading.getCreated()));

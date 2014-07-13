@@ -53,10 +53,12 @@
     <input type="text" class="form-control" id="datetime">
   </div>
             <h2>Přehledy</h2>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('H');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>V hodině</a><br>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('D');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-time"></span>Ve dne</a><br>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('M');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-calendar"></span>V měsíci</a><br>
-            <a href="#" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('Y');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-stats"></span>V roce</a><br>
+            <div id="menu">
+            <a href="#" id="h-btn" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('H');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>V hodině</a><br>
+            <a href="#" id="d-btn" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('D');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-time"></span>Ve dne</a><br>
+            <a href="#" id="m-btn" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('M');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-calendar"></span>V měsíci</a><br>
+            <a href="#" id="y-btn" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('Y');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-stats"></span>V roce</a><br>
+            </div>
             <div class="alert alert-warning" style="text-align:center">
               <strong>Aktuální teplota</strong>
               <h2 id="latestReading"></h2>
@@ -66,7 +68,7 @@
           <div class="col-xs-14 col-md-10">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title"><span class="glyphicon glyphicon-tasks"></span> Přehledy</h3>
+                <h3 class="panel-title"><span class="glyphicon glyphicon-tasks"></span> Přehled za období <b><span id="fromTo"></span></b></h3>
               </div>
               <div class="panel-body">
                 <div class="col-xs-14 col-md-10">
@@ -79,7 +81,7 @@
                 </div>
               </div>
             </div>
-            <table class="table table-striped" id="dataTable">
+           <!--  <table class="table table-striped" id="dataTable">
       <thead>
         <tr>
           <th>Date</th>
@@ -91,7 +93,7 @@
       <tbody>
         
       </tbody>
-    </table>
+    </table> -->
           </div>
         </div>
       </div>  

@@ -5,6 +5,7 @@
   pointColors=["rgba(220,220,220,1)","rgba(151,187,205,1)"];
   chartOptions={};
   filters={};
+  sensorCount = 2;
   qs={};
   chartOptions.datasetFill =false;
   chartOptions.showTooltips=true;
@@ -21,7 +22,9 @@
 	  setDefaults();
 	  setupCallbacks();
 	  addCriteria();
-	  loadData();	
+	  loadData();
+	  getLatest(updateCurrent);
+	  setInterval(getLatest(updateCurrent),60000);
 	  $('#datetime').datetimepicker({
 		  format:'d.m.Y H:i',
 		  lang:'cs'
@@ -30,6 +33,23 @@
 		  addCriteria();
 		  loadData();
 	  })
+  }
+  
+  function getLatest(callback){
+	  qs = {};
+	  qs.limit=sensorCount;
+	  $.ajax({url:window.app.ROOT_URL+"/latest",data:qs,datatype:"jsonp", success:callback});
+  }
+  
+  function updateCurrent(data){
+	  lr=$("#latestReading");
+	  out = "";
+	  for(r=0;r<data.length;r++) {
+		  out+=data[r].sensorId+":"+Math.round(data[r].value*100)/100+""+data[r].valueDimension + "<br>";
+	  }
+	  lr.html(out);
+	  
+	  
   }
   
   function setupCallbacks(){
@@ -53,6 +73,7 @@
   
   function setDefaults(){
 	  document.getElementById("datetime").value = moment().format('D.M.YYYY H:m');
+	  $("#d-btn").addClass("active");
   }
   
   function applyDataFilters(){
@@ -69,21 +90,27 @@
   function refreshChart(){
 	  headerElement = $("#chartHeader");
       var ctx = $("#temperatureChart").get(0).getContext("2d");
+      $("#menu a").removeClass("active");
+      active="active";
 	  switch (chartType) {
 	  case 'H' : 
+		  	$("#h-btn").addClass(active);
 	  		createHourChart(chartData,ctx);
 	  		headerElement.html("Hodinový pehled");
 	  		break;
 	  case 'D' : 
+		  	$("#d-btn").addClass(active);
 	  		createDayChart(chartData,ctx);
 	  		headerElement.html("Denní přehled");
 	  		break;
 	  case 'M' :
+		    $("#m-btn").addClass(active);
 		  	formatedSelectedDate = moment(document.getElementById("datetime").value,'D.M.YYYY H:m');
 	  		createMonthChart(chartData,ctx,new Date(formatedSelectedDate));
 	  		headerElement.html("Měsíční přehled");
 	  		break;
 	  case 'Y' :
+		  	$("#y-btn").addClass(active);
 	  		createYearChart(chartData,ctx);
 	  		headerElement.html("Roční přehled");
 	  		break;
@@ -97,6 +124,7 @@
   function addCreatedCriteria(selectedDate,selectedTime) {
 	  
 	  formatedSelectedDate = moment(selectedDate,'D.M.YYYY H:m');
+	  fromTo = $("#fromTo");
 	  
 	  switch (chartType) {
 	  case 'H' : 
@@ -106,6 +134,7 @@
 		  	toDate.setHours(toDate.getHours(),59,59,0);
 		  	qs.fromTime=fromDate.getTime();
 		  	qs.toTime=toDate.getTime();
+		  
 	  		break;
 	  case 'D' :
 		  	fromDate = new Date(formatedSelectedDate);
@@ -141,6 +170,7 @@
 		  	qs.toTime=toDate.getTime();
 		  	break;   
 	  }
+	 fromTo.html(moment(fromDate).format('D.M.YYYY HH:mm')+" - "+moment(toDate).format('D.M.YYYY HH:mm'));
 	  qs.dataScope=chartType;	
   }
 
@@ -198,9 +228,9 @@
   				avg=sum/count;
   				
   				dout={};
-  				dout.min=min;
-  				dout.max=max;
-  				dout.avg=avg;
+  				dout.min=Math.round(min*100)/100;
+  				dout.max=Math.round(max*100)/100;
+  				dout.avg=Math.round(avg*100)/100;
   				 
   				out+=sensorIds[j]+":<strong>"+dout[what]+dto.valueDimension+"</strong><br>";
   			 }
