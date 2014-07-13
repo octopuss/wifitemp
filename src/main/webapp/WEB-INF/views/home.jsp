@@ -47,7 +47,7 @@
      <div class="container-fluid">
        <div class="media"><img class="pull-left" style="padding-top:15px" src="https://cdn2.iconfinder.com/data/icons/freecns-cumulus/32/519770-82_Thermometer_Half_Full-64.png"><h1 class="page-header">Teploměr <small>Jungmannova</small></h1></div>
         <div class="row">
-          <div class="col-xs-4 col-md-2">
+          <div class="col-md-2">
           	<div class="form-group">
     <label for="datetime">Datum</label>
     <input type="text" class="form-control" id="datetime">
@@ -65,16 +65,16 @@
             </div>
             <div>Poslední aktualizace:<br><kbd>${generatedDate}</kbd></div>
           </div>
-          <div class="col-xs-14 col-md-10">
+          <div class="col-md-10">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title"><span class="glyphicon glyphicon-tasks"></span> Přehled za období <b><span id="fromTo"></span></b></h3>
               </div>
               <div class="panel-body">
-                <div class="col-xs-14 col-md-10">
+                <div class="col-md-10">
                   <canvas id="temperatureChart" width="1000" height="400"></canvas>
                 </div>
-                <div class="col-xs-4 col-md-2">
+                <div class="col-md-2">
                   <div class="alert alert-info">Nejnižší:<br><span class="minValue"><strong></strong></span></div>
                   <div class="alert alert-warning">Průměrná:<br><span class="avgValue"><strong></strong></span></div>
                   <div class="alert alert-danger">Nejvyšší:<br><span class="maxValue"><strong></strong></span></div>
