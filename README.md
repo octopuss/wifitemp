@@ -4,13 +4,14 @@ WifiTemp
 Dashboard for spark core powered digital thermometer.
 
 **Technologies**:
-*   spring
-*   spring-data-mongo
-*   MongoDB
+*	Gulp
+*	Node.js
+*	Bower
+*	webpack
 *   Chartjs
-*	jQuery
+*	React
+*	Flux
 *	Bootstrap
-*   Heroku
 
 **Hardware**:
 -   Spark core

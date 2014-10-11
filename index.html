@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teploměr</title>
+    <link href="dist/css/main.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="media"><img class="pull-left" style="padding-top:15px" src="https://cdn2.iconfinder.com/data/icons/freecns-cumulus/32/519770-82_Thermometer_Half_Full-64.png"><h1 class="page-header">Teploměr <small>Jungmannova</small></h1></div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="datetime">Datum</label>
+                <input type="text" class="form-control" id="datetime">
+            </div>
+            <h2>Přehledy</h2>
+            <div id="menu">
+                <a href="#" id="h-btn" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('H');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-dashboard"></span>V hodině</a><br>
+                <a href="#" id="d-btn" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('D');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-time"></span>Ve dne</a><br>
+                <a href="#" id="m-btn" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('M');"><span style="margin-left:10px" class="pull-left glyphicon glyphicon-calendar"></span>V měsíci</a><br>
+                <a href="#" id="y-btn" class="btn btn-primary btn-lg btn-block" onclick="switchChartType('Y');"><span style="margin-left:10px"class="pull-left glyphicon glyphicon-stats"></span>V roce</a><br>
+            </div>
+            <div class="alert alert-warning" style="text-align:center">
+                <strong>Aktuální teplota</strong>
+                <h2 id="latestReading"></h2>
+            </div>
+            <div>Poslední aktualizace:<br><kbd>10.10.2014 13:35:07</kbd></div>
+        </div>
+        <div id="panel" class="col-md-10">
+
+
+        </div>
+    </div>
+</div>
+<script src="dist/js/app.js"></script>
+</body>
+</html>
+   
