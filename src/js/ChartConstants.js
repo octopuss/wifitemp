@@ -5,6 +5,8 @@ module.exports = keyMirror({
   CHART_TYPE_HOUR:null,
   CHART_TYPE_DAY:null,
   CHART_TYPE_MONTH:null,
-  CHART_TYPE_YEAR:null
-
+  CHART_TYPE_YEAR:null,
+  READING_TYPE_MIN:null,
+  READING_TYPE_MAX:null,
+  READING_TYPE_AVG:null
 });

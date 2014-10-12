@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "flux": "^2.0.1",
+    "jquery": "^2.1.1",
     "react": "^0.11.2",
     "react-bootstrap": "^0.12.0"
   }

@@ -23,7 +23,6 @@
     "jquery": "~2.1.1",
     "fontawesome": "~4.2.0",
     "bootstrap": "~3.2.0",
-    "highcharts": "https://github.com/highslide-software/highcharts-release.git#~4.0.4",
     "chartjs": "~0.2.0"
   }
 }
