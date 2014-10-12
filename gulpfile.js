@@ -27,7 +27,7 @@ config = {
             [
             //'bower_components/bootstrap/dist/css/bootstrap.css',
                 //'bower_components/bootstrap/dist/css/bootstrap-theme.css',
-                'src/css/flatly.css',
+                'src/css/yeti.css',
                 'bower_components/fontawesome/css/font-awesome.css'
         ],
         fontDirs :
@@ -101,4 +101,5 @@ gulp.task('js',['jsx'], function () {
 
 
 
-gulp.task('default', ['sass','css','fonts','js']);
+//gulp.task('default', ['sass','css','fonts','js']);
+gulp.task('default', ['js']);
