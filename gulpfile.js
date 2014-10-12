@@ -27,6 +27,7 @@ config = {
             [
             //'bower_components/bootstrap/dist/css/bootstrap.css',
                 //'bower_components/bootstrap/dist/css/bootstrap-theme.css',
+                'bower_components/datetimepicker/jquery.datetimepicker.css',
                 'src/css/yeti.css',
                 'bower_components/fontawesome/css/font-awesome.css'
         ],
@@ -102,4 +103,4 @@ gulp.task('js',['jsx'], function () {
 
 
 //gulp.task('default', ['sass','css','fonts','js']);
-gulp.task('default', ['js']);
+gulp.task('default', ['css','js']);

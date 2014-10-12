@@ -8,11 +8,15 @@ var CHANGE_EVENT = 'change';
 
 var _readings = {}; // collection of server data
 
-var _currentChartType = ChartConstants.CHART_TYPE_DAY;
+var chart = {};
+
+
+function updateDatetime(datetime) {
+   chart.datetime = datetime;
+}
 
 function updatePlot(chartType) {
-    _currentChartType = chartType;
-    console.log(chartType);
+    chart.currentChartType = chartType;
 }
 
 var ChartStore = merge(EventEmitter.prototype, {
@@ -23,7 +27,10 @@ var ChartStore = merge(EventEmitter.prototype, {
     },
 
     getCurrentChartType:function () {
-        return _currentChartType;
+        if(chart.currentChartType == undefined) {
+            chart.currentChartType = ChartConstants.CHART_TYPE_DAY;
+        }
+        return chart.currentChartType;
     },
 
     /**
@@ -44,11 +51,16 @@ var ChartStore = merge(EventEmitter.prototype, {
 
     dispatcherIndex: AppDispatcher.register(function(payload) {
         var action = payload.action;
-
+        console.log("Performed action-->");
+        console.log(action);
         switch(action.actionType) {
 
             case ChartConstants.CHART_UPDATE_PLOT:
                 updatePlot(action.chartType);
+                ChartStore.emitChange();
+                break;
+            case ChartConstants.CHART_UPDATE_DATETIME:
+                updateDatetime(action.datetime);
                 ChartStore.emitChange();
                 break;
 

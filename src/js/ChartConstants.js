@@ -2,6 +2,7 @@ var keyMirror = require('react/lib/keyMirror'); // makes enumeration from provid
 
 var ChartConstants = keyMirror({
     CHART_UPDATE_PLOT: null,
+    CHART_UPDATE_DATETIME:null,
     CHART_TYPE_HOUR:null,
     CHART_TYPE_DAY:null,
     CHART_TYPE_MONTH:null,
@@ -11,7 +12,8 @@ var ChartConstants = keyMirror({
     READING_TYPE_AVG:null,
     READING_TYPE_ACTUAL:null,
     READING_DIMENSION_CELSIUS:null,
-    READING_DIMENSION_PERCENT:null
+    READING_DIMENSION_PERCENT:null,
+    MOMENT_DATETIME_FORMAT:null
 });
 
 module.exports = ChartConstants;
