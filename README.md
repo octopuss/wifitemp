@@ -4,7 +4,8 @@ WifiTemp
 Dashboard for spark core powered digital thermometer.
 
 **Technologies**:
-*	Gulp
+
+*   Gulp
 *	Node.js
 *	Bower
 *	webpack
@@ -14,6 +15,7 @@ Dashboard for spark core powered digital thermometer.
 *	Bootstrap
 
 **Hardware**:
+
 -   Spark core
 -   DS18B20
 -   16x2 Display with I2C backpack
