@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/octopuss/wifitemp.svg?branch=wifitemp-react)](https://travis-ci.org/octopuss/wifitemp)
+
 WifiTemp
 ========
 
