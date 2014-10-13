@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/octopuss/wifitemp.svg?branch=wifitemp-react)](https://travis-ci.org/octopuss/wifitemp)
-[![Dependency Status](https://david-dm.org/octopuss/wifitemp.png)](https://david-dm.org/octopuss/wifitemp.png)
+[![Dependency Status](https://david-dm.org/octopuss/wifitemp.png)](https://david-dm.org/octopuss/wifitemp)
 
 WifiTemp
 ========
