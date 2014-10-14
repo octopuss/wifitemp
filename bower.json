@@ -23,6 +23,7 @@
     "fontawesome": "~4.2.0",
     "bootstrap": "~3.2.0",
     "chartjs": "~0.2.0",
-    "datetimepicker": "https://github.com/xdan/datetimepicker.git#~2.3.7"
+    "datetimepicker": "https://github.com/xdan/datetimepicker.git#~2.3.7",
+    "compiler-latest": "http://dl.google.com/closure-compiler/compiler-latest.zip"
   }
 }

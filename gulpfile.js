@@ -10,6 +10,7 @@ var sass  = require('gulp-sass');
 var notify = require("gulp-notify");
 var uglify = require("gulp-uglify");
 var webpack = require("gulp-webpack");
+var closureCompiler = require('gulp-closure-compiler');
 
 config = {
     paths : {
@@ -95,6 +96,14 @@ gulp.task('fonts', function() {
 gulp.task('js',['jsx'], function () {
     return gulp.src([config.paths.jsPath+'/*.js',config.paths.workDir+'/*.js'])
         .pipe(webpack())
+//        .pipe(closureCompiler({
+//            compilerPath: 'bower_components/closure-compiler/compiler.jar',
+//            fileName: 'app.js',
+//            compilerFlags: {
+//                process_common_js_modules: true,
+//                common_js_entry_module:'template.js'
+//            }
+//        }))
         .pipe(rename('app.js'))
         .pipe(gulpif(args.production, uglify()))
         .pipe(gulp.dest(config.paths.distDir+config.paths.resources.jsDir))
@@ -103,4 +112,4 @@ gulp.task('js',['jsx'], function () {
 
 
 //gulp.task('default', ['sass','css','fonts','js']);
-gulp.task('default', ['css','js']);
+gulp.task('default', ['sass','css','js']);

@@ -16,12 +16,10 @@
             <div class="form-group" id="datetime-selector">
             </div>
             <h2>Přehledy</h2>
-            <div id="menu">
+            <div id="menu"></div>
+            <div id="latest-reading"></div>
+            <div id="last-updated"></div>
 
-            </div>
-            <div id="latest-reading">
-            </div>
-            <div>Poslední aktualizace:<br><kbd>10.10.2014 13:35:07</kbd></div>
         </div>
         <div id="panel" class="col-md-10">
 
@@ -30,6 +28,24 @@
     </div>
 </div>
 <script src="dist/js/app.js"></script>
+<script>
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if(dd<10) {
+        dd='0'+dd
+    }
+
+    if(mm<10) {
+        mm='0'+mm
+    }
+
+    today = dd+'.'+mm+'.'+yyyy;
+    app.main({
+   lastUpdated: today
+});</script>
 </body>
 </html>
    
