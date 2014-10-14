@@ -3,8 +3,8 @@ var EventEmitter = require('events').EventEmitter;
 var merge = require('react/lib/merge');
 var ChartConstants = require('./ChartConstants');
 var ChartEnums = require('./ChartEnums');
-
 var CHANGE_EVENT = 'change';
+var moment = require('moment');
 
 
 var chart = {
@@ -15,6 +15,9 @@ var chart = {
     },
     meta: {
        datetime:'',
+       year:'',
+       month:'',
+       chartType:ChartConstants.CHART_TYPE_DAY,
        colors:{
           fill: ["rgba(220,220,220,0.5)","rgba(151,187,205,0.5)"],
           stroke :["rgba(220,220,220,1)", "rgba(151,187,205,1)"],
@@ -28,18 +31,23 @@ var chart = {
 
 function updateDatetime(datetime) {
    chart.meta.datetime = datetime;
+   chart.meta.year=datetime.toDate().getFullYear();
+   chart.meta.month=datetime.toDate().getMonth()+1;
    setFromDateToDate();
 }
 
+function getNumberOfDays() {
+    var isLeap = ((chart.meta.year % 4) == 0 && ((chart.meta.year % 100) != 0 || (chart.meta.year % 400) == 0));
+    return [31, (isLeap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][chart.meta.month];
+}
+
 function setFromDateToDate(){
-    switch(chart.meta.currentChartType) {
+    switch(chart.meta.chartType) {
         case ChartConstants.CHART_TYPE_HOUR:
             var fromDate = new Date(chart.meta.datetime);
             fromDate.setHours(fromDate.getHours(),0,0,0);
             var toDate = new Date(chart.meta.datetime);
             toDate.setHours(toDate.getHours(),59,59,0);
-            chart.data.fromTime=fromDate.getTime();
-            chart.data.toTime=toDate.getTime();
             break;
         case ChartConstants.CHART_TYPE_DAY:
             fromDate = new Date(chart.meta.datetime);
@@ -48,32 +56,41 @@ function setFromDateToDate(){
             toDate = new Date(chart.meta.datetime);
             toDate.setDate(toDate.getDate());
             toDate.setHours(23,59,59,0);
-            chart.data.fromTime=fromDate.getTime();
-            chart.data.toTime=toDate.getTime();
+
             break;
         case ChartConstants.CHART_TYPE_MONTH:
             fromDate = new Date(chart.meta.datetime);
             fromDate.setHours(0,0,0,0);
             fromDate.setDate(1);
-            toDate = new Date(datetime);
+            toDate = new Date(chart.meta.datetime);
             toDate.setHours(23,59,59,0);
-            toDate.setDate(ChartStore.getNumberOfDays());
-            chart.data.fromTime=fromDate.getTime();
-            chart.data.toTime=toDate.getTime();
+            toDate.setDate(getNumberOfDays());
             break;
         case ChartConstants.CHART_TYPE_YEAR:
+            fromDate = new Date(chart.meta.datetime);
+            fromDate.setHours(0,0,0,0);
+            fromDate.setDate(1);
+            fromDate.setMonth(0);
+            toDate = new Date(chart.meta.datetime);
+            toDate.setHours(23,59,59,0);
+            toDate.setDate(31);
+            toDate.setMonth(11);
+            toDate.setYear(Number(chart.meta.year));
             break;
     }
+    chart.data.fromTime=moment(fromDate);
+    chart.data.toTime=moment(toDate);
 }
 
 function updatePlot(chartType) {
-    chart.meta.currentChartType = chartType;
+    chart.meta.chartType = chartType;
 }
 
 var ChartStore = merge(EventEmitter.prototype, {
 
     setup: function(data){
         chart.data.lastUpdated=data.lastUpdated;
+        updateDatetime(moment(new Date()));
         this.emitChange();
     },
     emitChange: function() {
@@ -101,16 +118,10 @@ var ChartStore = merge(EventEmitter.prototype, {
     }
     return days;
     },
-    getNumberOfDays:function() {
-    var isLeap = ((chart.meta.year % 4) == 0 && ((chart.meta.year % 100) != 0 || (chart.meta.year % 400) == 0));
-    return [31, (isLeap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][chart.meta.month];
-    },
 
     getCurrentChartType:function () {
-        if(chart.meta.currentChartType == undefined) {
-            chart.meta.currentChartType = ChartConstants.CHART_TYPE_DAY;
-        }
-        return chart.meta.currentChartType;
+        //console.log("current char type = " + chart.meta.chartType)
+        return chart.meta.chartType;
     },
     getLastUpdated:function(){
        return chart.data.lastUpdated;
@@ -138,12 +149,15 @@ var ChartStore = merge(EventEmitter.prototype, {
 
             case ChartConstants.CHART_UPDATE_PLOT:
                 updatePlot(action.chartType);
+                setFromDateToDate();
                 ChartStore.emitChange();
+                console.log(chart);
                 break;
             case ChartConstants.CHART_UPDATE_DATETIME:
                 updateDatetime(action.datetime);
                 setFromDateToDate();
                 ChartStore.emitChange();
+
                 break;
 
             // add more cases for other actionTypes, like TODO_UPDATE, etc.

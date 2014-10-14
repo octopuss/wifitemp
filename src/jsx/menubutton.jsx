@@ -23,7 +23,6 @@ var MenuButton = React.createClass({
     },
 
     changeHandler: function() {
-
         this.changeActiveState();
     },
 

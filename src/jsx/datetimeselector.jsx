@@ -10,15 +10,23 @@ var ChartEnums = require('../src/js/ChartEnums');
 
 require('../bower_components/datetimepicker/jquery.datetimepicker');
 
-
+Date.parseDate = function( input, format ){
+    return moment(input,format).toDate();
+};
+Date.prototype.dateFormat = function( format ){
+    return moment(this).format(format);
+};
 
 var DatetimeSelector = React.createClass({
     getInitialState: function(){
-        return {datetime:moment()}
+        return {datetime:moment(new Date())}
     },
     componentDidMount:function(){
-       jQuery(this.refs.datetimefield.getDOMNode()).datetimepicker({format:'d.m.Y H:i',
-            lang:'cs', onChangeDateTime:this.onInputChange});
+       jQuery(this.refs.datetimefield.getDOMNode()).datetimepicker({
+           format:ChartEnums[ChartConstants.MOMENT_DATETIME_FORMAT],
+            lang:'cs',
+           onChangeDateTime:this.onInputChange
+       });
     },
     onInputChange: function(e) {
            var m = moment(e);

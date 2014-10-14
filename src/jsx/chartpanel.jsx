@@ -19,6 +19,7 @@ var ChartPanel = React.createClass({
     },
     componentDidMount: function() {
         ChartStore.addChangeListener(this.changeHandler);
+        this.changeHandler();
     },
 
     componentWillUnmount: function() {
@@ -33,7 +34,7 @@ var ChartPanel = React.createClass({
        });
     },
     render:function() {
-        return (<Panel header={<div><Icon glyph="tasks"/><span>{this.props.title}<b>{this.state.fromTime}-{this.state.toTime}</b></span></div>}>
+        return (<Panel header={<div><Icon glyph="tasks"/>&nbsp;<span>{this.props.title}&nbsp;<b>{this.state.fromTime}-{this.state.toTime}</b></span></div>}>
             <div className="col-md-10">
                 <Chart id={this.props.chartId}/>
             </div>
