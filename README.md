@@ -1,9 +1,15 @@
-[![Build Status](https://travis-ci.org/octopuss/wifitemp.svg?branch=wifitemp-react)](https://travis-ci.org/octopuss/wifitemp)
 
-WifiTemp
-========
+# WifiTemp [![Build Status](https://travis-ci.org/octopuss/wifitemp.svg?branch=wifitemp-react)](https://travis-ci.org/octopuss/wifitemp)
+
 
 Dashboard for spark core powered digital thermometer. This version is based on javascript technology as much as possible.
+
+Installation
+
+    npm install -g bower
+    npm install -g gulp
+    bower install
+
 
 Technologies
 ------------
@@ -24,6 +30,9 @@ Technologies
 *	[Flux](http://facebook.github.io/flux/docs/overview.html) - unidirectional data flow
 *   [React-bootstrap](http://react-bootstrap.github.io/) - bootstrap components for react
 *	[Bootstrap](http://getbootstrap.com/) - gui components
+
+**Other**
+* [Travis CI](https://travis-ci.org/)
 
 **Hardware**:
 
