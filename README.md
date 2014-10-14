@@ -30,8 +30,10 @@ Technologies
 *	[Flux](http://facebook.github.io/flux/docs/overview.html) - unidirectional data flow
 *   [React-bootstrap](http://react-bootstrap.github.io/) - bootstrap components for react
 *	[Bootstrap](http://getbootstrap.com/) - gui components
+*   [Moment.js](http://momentjs.com/) - javascript datetime manipulation
 
 **Other**
+
 * [Travis CI](https://travis-ci.org/)
 
 **Hardware**:
