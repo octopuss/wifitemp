@@ -71,12 +71,6 @@ var ChartStore = merge(EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
-    chartUpdatePlot:function(action){
-        ChartActions.updatePlot(action.chartType,chart);
-        ChartActions.setFromDateToDate(chart);
-        this.emitChange();
-        console.log(chart);
-    },
 
     dispatcherIndex: AppDispatcher.register(function(payload) {
         var action = payload.action;
@@ -85,18 +79,19 @@ var ChartStore = merge(EventEmitter.prototype, {
         switch(action.actionType) {
 
             case ChartConstants.CHART_UPDATE_PLOT:
-                this.chartUpdatePlot(action);
+                ChartActions.chartUpdatePlot(action,chart);
+
                 break;
             case ChartConstants.CHART_UPDATE_DATETIME:
                 ChartActions.updateDatetime(action.datetime,chart);
                 ChartActions.setFromDateToDate(chart);
-                this.emitChange();
+
 
                 break;
 
             // add more cases for other actionTypes, like TODO_UPDATE, etc.
         }
-
+        ChartStore.emitChange();
         return true; // No errors. Needed by promise in Dispatcher.
     })
 

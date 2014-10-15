@@ -2,8 +2,8 @@
 
 var React = require('react');
 var Panel = require('react-bootstrap/Panel');
-var Chart = require('./chart.js');
-var ReadingBlock = require('../work/readingblock.js');
+var Chart = require('./chart');
+var ReadingBlock = require('./readingblock');
 var ChartConstants = require('../src/js/ChartConstants');
 var ChartEnums = require('../src/js/ChartEnums');
 var ChartStore = require('../src/js/ChartStore');

@@ -14,6 +14,11 @@ var ChartActions = {
             chart.data.latestReading=payload;
         },function(err) {console.log(err.statusText)});
     },
+    chartUpdatePlot:function(action,chart){
+        this.updatePlot(action.chartType,chart);
+        this.setFromDateToDate(chart);
+        console.log(chart);
+    },
     getNumberOfDays:function(chart) {
     var isLeap = ((chart.meta.year % 4) == 0 && ((chart.meta.year % 100) != 0 || (chart.meta.year % 400) == 0));
     return [31, (isLeap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][chart.meta.month];
