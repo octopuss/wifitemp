@@ -24,7 +24,8 @@ var DatetimeSelector = React.createClass({
     componentDidMount:function(){
        jQuery(this.refs.datetimefield.getDOMNode()).datetimepicker({
            format:ChartEnums[ChartConstants.MOMENT_DATETIME_FORMAT],
-            lang:'cs',
+           formatTime:ChartEnums[ChartConstants.DATEPICKER_TIME_FORMAT],
+            lang:ChartEnums[ChartConstants.DATETPICKER_LANGUAGE],
            onChangeDateTime:this.onInputChange
        });
     },

@@ -20,6 +20,8 @@ var LatestReading = React.createClass({
     },
 
     changeHandler: function() {
+        var lr  =ChartStore.getLatestReading();
+        this.setState({readingValue:lr.value, readingDimension:ChartEnums[lr.valueDimension]});
     },
 
     render: function(){

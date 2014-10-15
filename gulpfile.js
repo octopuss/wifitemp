@@ -11,6 +11,7 @@ var notify = require("gulp-notify");
 var uglify = require("gulp-uglify");
 var webpack = require("gulp-webpack");
 
+
 config = {
     paths : {
         bowerDir :'bower_components',
@@ -80,6 +81,9 @@ gulp.task('css', function() {
     return gulp.src(csss.concat(config.paths.cssDirs))
         .pipe(concat("main.css"))
         .pipe(gulpif(args.production,minifycss()))
+//        .pipe(uncss({
+//           html: 'D:/8puss/work/new_workspace/wifitemp/index.html'
+//        }))
         .pipe(gulp.dest(config.paths.distDir+config.paths.resources.cssDir))
 })
 

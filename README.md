@@ -31,6 +31,7 @@ Technologies
 *   [React-bootstrap](http://react-bootstrap.github.io/) - bootstrap components for react
 *	[Bootstrap](http://getbootstrap.com/) - gui components
 *   [Moment.js](http://momentjs.com/) - javascript datetime manipulation
+*   [Promises.js](https://www.promisejs.org/) - asynchronous callbacks wrapper
 
 **Other**
 
