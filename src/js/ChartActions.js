@@ -9,11 +9,6 @@ var ChartActions = {
     chart.meta.month=chart.meta.datetime.toDate().getMonth()+1;
     this.setFromDateToDate(chart);
     },
-    setLatestReading:function(promise, chart) {
-        promise.then(function(payload){
-            chart.data.latestReading=payload;
-        },function(err) {console.log(err.statusText)});
-    },
     chartUpdatePlot:function(action,chart){
         this.updatePlot(action.chartType,chart);
         this.setFromDateToDate(chart);
@@ -46,7 +41,7 @@ var ChartActions = {
                 fromDate.setDate(1);
                 toDate = new Date(chart.meta.datetime);
                 toDate.setHours(23,59,59,0);
-                toDate.setDate(getNumberOfDays());
+                toDate.setDate(this.getNumberOfDays(chart));
                 break;
             case ChartConstants.CHART_TYPE_YEAR:
                 fromDate = new Date(chart.meta.datetime);

@@ -9,18 +9,20 @@ var ChartStore = require('../src/js/ChartStore');
 var LatestReading = React.createClass({
 
     getInitialState:function(){
-        return {readingValue:0, readingDimension:ChartEnums[ChartConstants.READING_DIMENSION_CELSIUS]};
+        var lr = ChartStore.getLatestReading();
+        return {readingValue:lr.value, readingDimension:ChartEnums[lr.valueDimension]};
     },
     componentDidMount: function() {
-        ChartStore.addChangeListener(this.changeHandler);
+        ChartStore.addLoadListener(this.changeHandler);
     },
 
     componentWillUnmount: function() {
-        ChartStore.removeChangeListener(this.changeHandler);
+        ChartStore.removeLoadListener(this.changeHandler);
     },
 
     changeHandler: function() {
-        var lr  =ChartStore.getLatestReading();
+        console.log("change detected");
+        var lr  =ChartStore.getLatestReading()[0];
         this.setState({readingValue:lr.value, readingDimension:ChartEnums[lr.valueDimension]});
     },
 

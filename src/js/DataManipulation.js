@@ -9,7 +9,6 @@ var DataManipulation = {
     qs.limit=ChartEnums[ChartConstants.CHART_SENSOR_COUNT];
     var jqPromise = Jquery.ajax({url:ChartEnums[ChartConstants.CHART_DATA_URL]+"/latest",data:qs,datatype:"jsonp"});
     var promise =  Promise.resolve(jqPromise);
-    console.log(promise);
     return promise;
     }
 };

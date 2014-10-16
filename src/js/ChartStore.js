@@ -6,14 +6,13 @@ var ChartEnums = require('./ChartEnums');
 var ChartActions= require('./ChartActions');
 var Data= require('./DataManipulation');
 var CHANGE_EVENT = 'change';
-
-
+var LOAD_EVENT = 'load';
 
 var chart = {
     data: {
         fromTime:'',
         toTime:'',
-        latestReading:'',
+        latestReading:[],
         readings : {}
     },
     meta: {
@@ -36,11 +35,17 @@ var ChartStore = merge(EventEmitter.prototype, {
     setup: function(data){
         chart.data.lastUpdated=data.lastUpdated;
         ChartActions.updateDatetime(new Date(),chart);
-        ChartActions.setLatestReading(Data.getLatestReading(),chart);
-        this.emitChange();
+        var lrPromise = Data.getLatestReading();
+        lrPromise.then(function(payload){
+            chart.data.latestReading=payload;
+            ChartStore.emitLoad();
+        });
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
+    },
+    emitLoad: function() {
+        this.emit(LOAD_EVENT);
     },
     getFromToDates: function(){
         return {fromTime:chart.data.fromTime,toTime:chart.data.toTime};
@@ -69,6 +74,20 @@ var ChartStore = merge(EventEmitter.prototype, {
      */
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    addLoadListener: function(callback) {
+        this.on(LOAD_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    removeLoadListener: function(callback) {
+        this.removeListener(LOAD_EVENT, callback);
     },
 
 
