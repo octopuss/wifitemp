@@ -107,4 +107,4 @@ gulp.task('js',['jsx'], function () {
 
 
 //gulp.task('default', ['sass','css','fonts','js']);
-gulp.task('default', ['sass','css','js']);
+gulp.task('default', ['sass','css','fonts','js']);

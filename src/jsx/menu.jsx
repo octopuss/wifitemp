@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var MenuButton = require('./menubutton.js');
+var MenuButton = require('./menubutton');
 var ChartConstants = require('../src/js/ChartConstants');
 
 

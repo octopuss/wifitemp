@@ -10,16 +10,17 @@ var LatestReading = React.createClass({
 
     getInitialState:function(){
         var lr = ChartStore.getLatestReading();
-        return {readingValue:lr.value, readingDimension:ChartEnums[lr.valueDimension]};
+        return {readingValue:lr.value, readingDimension:ChartEnums[lr.valueDimension], pending:false};
     },
     componentDidMount: function() {
         ChartStore.addLoadListener(this.changeHandler);
+
     },
 
     componentWillUnmount: function() {
         ChartStore.removeLoadListener(this.changeHandler);
-    },
 
+    },
     changeHandler: function() {
         console.log("change detected");
         var lr  =ChartStore.getLatestReading()[0];
@@ -29,7 +30,8 @@ var LatestReading = React.createClass({
     render: function(){
         return(<Alert bsStyle="warning">
             <strong>Aktuální teplota</strong>
-            <h2>{this.state.readingValue}{this.state.readingDimension}</h2>
+            <h2>{this.state.readingValue+this.state.readingDimension}
+             </h2>
         </Alert>
         );
     }

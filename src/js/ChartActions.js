@@ -4,10 +4,10 @@ var moment = require('moment');
 
 var ChartActions = {
     updateDatetime:function (datetime,chart) {
-    chart.meta.datetime = moment(datetime);
-    chart.meta.year=chart.meta.datetime.toDate().getFullYear();
-    chart.meta.month=chart.meta.datetime.toDate().getMonth()+1;
-    this.setFromDateToDate(chart);
+        chart.meta.datetime = moment(datetime);
+        chart.meta.year=chart.meta.datetime.toDate().getFullYear();
+        chart.meta.month=chart.meta.datetime.toDate().getMonth()+1;
+        this.setFromDateToDate(chart);
     },
     chartUpdatePlot:function(action,chart){
         this.updatePlot(action.chartType,chart);

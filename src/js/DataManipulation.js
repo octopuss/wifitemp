@@ -7,6 +7,7 @@ var DataManipulation = {
     getLatestReading:function(){
     qs = {};
     qs.limit=ChartEnums[ChartConstants.CHART_SENSOR_COUNT];
+    console.log("creating promise");
     var jqPromise = Jquery.ajax({url:ChartEnums[ChartConstants.CHART_DATA_URL]+"/latest",data:qs,datatype:"jsonp"});
     var promise =  Promise.resolve(jqPromise);
     return promise;

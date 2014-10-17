@@ -7,6 +7,8 @@ var ChartActions= require('./ChartActions');
 var Data= require('./DataManipulation');
 var CHANGE_EVENT = 'change';
 var LOAD_EVENT = 'load';
+var PENDING_EVENT = 'pending';
+var LOADING_DONE_EVENT='loading-done';
 
 var chart = {
     data: {
@@ -35,17 +37,26 @@ var ChartStore = merge(EventEmitter.prototype, {
     setup: function(data){
         chart.data.lastUpdated=data.lastUpdated;
         ChartActions.updateDatetime(new Date(),chart);
+        console.log("beforePromise");
         var lrPromise = Data.getLatestReading();
+        console.log("promiseSet");
         lrPromise.then(function(payload){
             chart.data.latestReading=payload;
             ChartStore.emitLoad();
         });
+        console.log("afterPromise");
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
     emitLoad: function() {
         this.emit(LOAD_EVENT);
+    },
+    emitLoadingDone: function() {
+        this.emit(LOADING_DONE_EVENT);
+    },
+    emitPending: function() {
+        this.emit(PENDING_EVENT);
     },
     getFromToDates: function(){
         return {fromTime:chart.data.fromTime,toTime:chart.data.toTime};
@@ -55,7 +66,6 @@ var ChartStore = merge(EventEmitter.prototype, {
         return chart.meta.chartType;
     },
     getLatestReading:function(){
-       Data.getLatestReading();
        return chart.data.latestReading;
     },
     getLastUpdated:function(){
@@ -90,6 +100,34 @@ var ChartStore = merge(EventEmitter.prototype, {
         this.removeListener(LOAD_EVENT, callback);
     },
 
+    /**
+     * @param {function} callback
+     */
+    addPendingListener: function(callback) {
+        this.on(PENDING_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    removePendingListener: function(callback) {
+        this.removeListener(PENDING_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    addDoneListener: function(callback) {
+        this.on(LOADING_DONE_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    removeDoneListener: function(callback) {
+        this.removeListener(LOADING_DONE_EVENT, callback);
+    },
+
 
     dispatcherIndex: AppDispatcher.register(function(payload) {
         var action = payload.action;
@@ -98,8 +136,10 @@ var ChartStore = merge(EventEmitter.prototype, {
         switch(action.actionType) {
 
             case ChartConstants.CHART_UPDATE_PLOT:
-                ChartActions.chartUpdatePlot(action,chart);
 
+                ChartActions.chartUpdatePlot(action,chart);
+                ChartStore.emitPending();
+                setTimeout(function(){console.log("finished pending");ChartStore.emitLoadingDone();},5000);
                 break;
             case ChartConstants.CHART_UPDATE_DATETIME:
                 ChartActions.updateDatetime(action.datetime,chart);

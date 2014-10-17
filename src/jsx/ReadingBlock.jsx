@@ -14,10 +14,18 @@ var ReadingBlock = React.createClass({
 
     componentDidMount: function() {
         ChartStore.addChangeListener(this.changeHandler);
+        ChartStore.addPendingListener(this.togglePendingState);
+        ChartStore.addDoneListener(this.togglePendingState);
     },
 
     componentWillUnmount: function() {
         ChartStore.removeChangeListener(this.changeHandler);
+        ChartStore.removePendingListener(this.togglePendingState);
+        ChartStore.removeDoneListener(this.togglePendingState);
+    },
+
+    togglePendingState:function(){
+        this.setState({pending:!this.state.pending});
     },
 
     changeHandler: function() {
@@ -39,7 +47,7 @@ var ReadingBlock = React.createClass({
         return(
             <Alert bsStyle={readingSpecificProps.style}>
                 {readingSpecificProps.text}<br/>
-            {this.state.readingValue}{this.state.readingDimension}
+           {'\u00A0'}{!this.state.pending ? this.state.readingValue+this.state.readingDimension : <i className="fa fa-spinner fa-spin pull-left"/>}
             </Alert>
             )
     }
