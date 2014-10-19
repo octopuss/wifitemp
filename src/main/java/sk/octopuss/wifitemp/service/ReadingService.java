@@ -28,18 +28,18 @@ public class ReadingService {
 		result.setNodeIds(readingRepository.findDistinct(criteria, "nodeId"));
 		result.setNodeNames(readingRepository.findDistinct(criteria, "nodeName"));
 		result.setSensorIds(readingRepository.findDistinct(criteria, "sensorId"));
-		if(datascope.equals("H")) {
+		if(datascope.equals("H") || datascope.equals("CHART_TYPE_HOUR")) {
 		result.setReadings(readings);
 		result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgHour(criteria));
 		}
-		if(datascope.equals("D")) {
+		if(datascope.equals("D") || datascope.equals("CHART_TYPE_DAY")) {
 			result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgDay(criteria));
 			result.setReadings(readings);
 		}
-		if(datascope.equals("M")) {
+		if(datascope.equals("M") || datascope.equals("CHART_TYPE_MONTH")) {
 			result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgMonth(criteria));
 		}
-		if(datascope.equals("Y")) {
+		if(datascope.equals("Y")|| datascope.equals("CHART_TYPE_YEAR")) {
 			result.setMinMaxAvgDTO(readingRepository.getMinMaxAvgYear(criteria));
 		}
 		return result;
