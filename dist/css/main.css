@@ -1,6 +1,14 @@
 #menu {
   margin: 0px 0px 10px 0px; }
 
+.loadingProgress {
+  width: 40%;
+  margin: 0 auto;
+  margin-top: 18%; }
+
+.chartContainer {
+  height: 400px; }
+
 .xdsoft_datetimepicker{
 	box-shadow: 0px 5px 15px -5px rgba(0, 0, 0, 0.506);
 	background: #FFFFFF;

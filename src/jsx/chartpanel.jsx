@@ -35,7 +35,7 @@ var ChartPanel = React.createClass({
     },
     render:function() {
         return (<Panel header={<div><Icon glyph="tasks"/>&nbsp;<span>{this.props.title}&nbsp;<b>{this.state.fromTime}-{this.state.toTime}</b></span></div>}>
-            <div className="col-md-10">
+            <div className="col-md-10 chartContainer">
                 <Chart id={this.props.chartId}/>
             </div>
             <div className="col-md-2">

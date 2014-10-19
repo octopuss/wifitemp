@@ -5,12 +5,22 @@ var ChartEnums = require('./ChartEnums');
 
 var DataManipulation = {
     getLatestReading:function(){
-    qs = {};
+    var qs = {};
     qs.limit=ChartEnums[ChartConstants.CHART_SENSOR_COUNT];
     console.log("creating promise");
     var jqPromise = Jquery.ajax({url:ChartEnums[ChartConstants.CHART_DATA_URL]+"/latest",data:qs,datatype:"jsonp"});
     var promise =  Promise.resolve(jqPromise);
     return promise;
+    },
+    getChartData:function(chart){
+        var qs = {};
+        qs.fromTime=chart.data.fromTime.valueOf();
+        qs.toTime=chart.data.toTime.valueOf();
+        qs.dataScope=chart.meta.chartType;
+        console.log("creating promise");
+        var jqPromise = Jquery.ajax({url:ChartEnums[ChartConstants.CHART_DATA_URL]+"/data",data:qs,datatype:"jsonp"});
+        var promise =  Promise.resolve(jqPromise);
+        return promise;
     }
 };
 

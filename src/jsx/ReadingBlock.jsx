@@ -16,12 +16,14 @@ var ReadingBlock = React.createClass({
         ChartStore.addChangeListener(this.changeHandler);
         ChartStore.addPendingListener(this.togglePendingState);
         ChartStore.addDoneListener(this.togglePendingState);
+        ChartStore.addLoadListener(this.changeHandler);
     },
 
     componentWillUnmount: function() {
         ChartStore.removeChangeListener(this.changeHandler);
         ChartStore.removePendingListener(this.togglePendingState);
         ChartStore.removeDoneListener(this.togglePendingState);
+        ChartStore.removeLoadListener(this.changeHandler);
     },
 
     togglePendingState:function(){
@@ -29,6 +31,7 @@ var ReadingBlock = React.createClass({
     },
 
     changeHandler: function() {
+        this.setState({readingValue:ChartStore.getMinMaxAvg(this.props.readingType)});
     },
 
     mapReadingSpecificProps: function(){

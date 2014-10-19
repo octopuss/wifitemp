@@ -15,7 +15,9 @@ var chart = {
         fromTime:'',
         toTime:'',
         latestReading:[],
-        readings : {}
+        readings : [],
+        minMaxAvg:{},
+        minMaxAvgDTO:[]
     },
     meta: {
        datetime:'',
@@ -28,7 +30,8 @@ var chart = {
           point : ["rgba(220,220,220,1)","rgba(151,187,205,1)"]
         }
 
-    }
+    },
+    ui:{}
 };
 
 
@@ -37,19 +40,27 @@ var ChartStore = merge(EventEmitter.prototype, {
     setup: function(data){
         chart.data.lastUpdated=data.lastUpdated;
         ChartActions.updateDatetime(new Date(),chart);
-        console.log("beforePromise");
         var lrPromise = Data.getLatestReading();
-        console.log("promiseSet");
-        lrPromise.then(function(payload){
-            chart.data.latestReading=payload;
+        var dPromise = Data.getChartData(chart);
+        Promise.all([lrPromise,dPromise]).then(
+            function(res){
+            console.log(res);
+            chart.data.latestReading=res[0];
+            chart.data.readings=res[1].readings;
+            chart.data.minMaxAvgDTO=res[1].minMaxAvgDTO;
+            chart.data.minMaxAvg=ChartActions.getMinMaxAvg(chart);
+            console.log(chart);
             ChartStore.emitLoad();
-        });
-        console.log("afterPromise");
+
+
+         });
     },
     emitChange: function() {
+        console.log("Changed...");
         this.emit(CHANGE_EVENT);
     },
     emitLoad: function() {
+        console.log("Loaded...");
         this.emit(LOAD_EVENT);
     },
     emitLoadingDone: function() {
@@ -57,6 +68,9 @@ var ChartStore = merge(EventEmitter.prototype, {
     },
     emitPending: function() {
         this.emit(PENDING_EVENT);
+    },
+    getMinMaxAvg:function(aggregation) {
+            return chart.data.minMaxAvg[aggregation];
     },
     getFromToDates: function(){
         return {fromTime:chart.data.fromTime,toTime:chart.data.toTime};
@@ -70,6 +84,9 @@ var ChartStore = merge(EventEmitter.prototype, {
     },
     getLastUpdated:function(){
        return chart.data.lastUpdated;
+    },
+    getUi:function(){
+        return ChartActions.assemblyChartData(chart);
     },
 
     /**
