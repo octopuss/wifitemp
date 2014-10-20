@@ -8,5 +8,6 @@ ChartEnums[ChartConstants.DATEPICKER_LANGUAGE]='cs';
 ChartEnums[ChartConstants.CHART_DATA_URL]="http://wifitemp.quickjob.cz/";
 //ChartEnums[ChartConstants.CHART_DATA_URL]="http://private-1bd2b-octopuss.apiary-mock.com";
 ChartEnums[ChartConstants.CHART_SENSOR_COUNT]=2;
+ChartEnums[ChartConstants.SENSOR_ID]="temp02";
 
 module.exports = ChartEnums;

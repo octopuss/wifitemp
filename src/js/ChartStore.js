@@ -55,6 +55,13 @@ var ChartStore = merge(EventEmitter.prototype, {
 
          });
     },
+    processDataUpdate:function(res){
+        chart.data.latestReading=res;
+        chart.data.readings=res.readings;
+        chart.data.minMaxAvgDTO=res.minMaxAvgDTO;
+        chart.data.minMaxAvg=ChartActions.getMinMaxAvg(chart);
+        ChartStore.emitLoadingDone();
+    },
     emitChange: function() {
         console.log("Changed...");
         this.emit(CHANGE_EVENT);
@@ -156,16 +163,18 @@ var ChartStore = merge(EventEmitter.prototype, {
 
                 ChartActions.chartUpdatePlot(action,chart);
                 ChartStore.emitPending();
-                setTimeout(function(){console.log("finished pending");ChartStore.emitLoadingDone();},5000);
+               // setTimeout(function(){console.log("finished pending");ChartStore.emitLoadingDone();},5000);
+                var dPromise = Data.getChartData(chart);
+                Promise.resolve(dPromise).then(ChartStore.processDataUpdate);
                 break;
             case ChartConstants.CHART_UPDATE_DATETIME:
                 ChartActions.updateDatetime(action.datetime,chart);
                 ChartActions.setFromDateToDate(chart);
-
-
+                ChartStore.emitPending();
+                // setTimeout(function(){console.log("finished pending");ChartStore.emitLoadingDone();},5000);
+                var dPromise = Data.getChartData(chart);
+                Promise.resolve(dPromise).then(ChartStore.processDataUpdate);
                 break;
-
-            // add more cases for other actionTypes, like TODO_UPDATE, etc.
         }
         ChartStore.emitChange();
         return true; // No errors. Needed by promise in Dispatcher.

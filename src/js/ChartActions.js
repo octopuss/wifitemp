@@ -37,7 +37,7 @@ var ChartActions = {
         dataset.strokeColor=chart.meta.colors.stroke;
         dataset.pointColor=chart.meta.colors.point;
         dataset.fillColor=chart.meta.colors.fill;
-        dataset.data=this.getPlotData(chart,"temp01");
+        dataset.data=this.getPlotData(chart,ChartEnums[ChartConstants.SENSOR_ID]);
         data.datasets[0]=dataset;
         return data;
     },

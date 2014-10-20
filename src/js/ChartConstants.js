@@ -18,7 +18,8 @@ var ChartConstants = keyMirror({
     DATEPICKER_TIME_FORMAT:null,
     DATEPICKER_FIRST_DAY:null,
     DATEPICKER_LANGUAGE:null,
-    MOMENT_DATETIME_FORMAT:null
+    MOMENT_DATETIME_FORMAT:null,
+    SENSOR_ID:null
 });
 
 module.exports = ChartConstants;
