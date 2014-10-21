@@ -19,11 +19,13 @@ var ChartPanel = React.createClass({
     },
     componentDidMount: function() {
         ChartStore.addChangeListener(this.changeHandler);
+        ChartStore.addLoadListener(this.changeHandler);
         this.changeHandler();
     },
 
     componentWillUnmount: function() {
         ChartStore.removeChangeListener(this.changeHandler);
+        ChartStore.removeLoadListener(this.changeHandler);
     },
 
     changeHandler: function() {

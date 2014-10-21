@@ -25,7 +25,6 @@ function formattedTime(){
 
 router.get('/', function(req, res) {
   var c =react.renderComponentToString(App());
-    console.log(c);
   res.render('index', { title: 'Teploměr Jungmannova', content : c, generated:formattedTime()});
 });
 
