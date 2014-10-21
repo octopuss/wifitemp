@@ -21,7 +21,7 @@ var DatetimeSelector = React.createClass({
     getInitialState: function(){
         return {datetime:moment(new Date()),
         options:{
-            format:ChartEnums[ChartConstants.DATEPICKER_DATETIME_FORMAT],
+            format:ChartEnums[ChartConstants.MOMENT_DATETIME_FORMAT],
             formatTime:ChartEnums[ChartConstants.DATEPICKER_TIME_FORMAT],
             formatDate:ChartEnums[ChartConstants.DATEPICKER_DATE_FORMAT],
             lang:ChartEnums[ChartConstants.DATEPICKER_LANGUAGE],
