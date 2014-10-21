@@ -1,8 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var react = require('react');
+var path = require('path');
 console.log(__dirname);
-var App = require('../../../work/app');
+var appDir  = path.dirname(require.main.filename);
+console.log();
+var App = require(appDir+'/work/app');
 
 /* GET home page. */
 
