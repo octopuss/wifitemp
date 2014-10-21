@@ -8,7 +8,7 @@ var AppDispatcher = require('../src/js/AppDispatcher');
 var ChartConstants = require('../src/js/ChartConstants');
 var ChartEnums = require('../src/js/ChartEnums');
 
-require('../bower_components/datetimepicker/jquery.datetimepicker');
+
 
 Date.parseDate = function( input, format ){
     return moment(input,format).toDate();
@@ -19,15 +19,20 @@ Date.prototype.dateFormat = function( format ){
 
 var DatetimeSelector = React.createClass({
     getInitialState: function(){
-        return {datetime:moment(new Date())}
+        return {datetime:moment(new Date()),
+        options:{
+            format:ChartEnums[ChartConstants.DATEPICKER_DATETIME_FORMAT],
+            formatTime:ChartEnums[ChartConstants.DATEPICKER_TIME_FORMAT],
+            formatDate:ChartEnums[ChartConstants.DATEPICKER_DATE_FORMAT],
+            lang:ChartEnums[ChartConstants.DATEPICKER_LANGUAGE],
+            dayOfWeekStart:ChartEnums[ChartConstants.DATEPICKER_FIRST_DAY],
+            onChangeDateTime:this.onInputChange
+        }}
     },
     componentDidMount:function(){
-       jQuery(this.refs.datetimefield.getDOMNode()).datetimepicker({
-           format:ChartEnums[ChartConstants.MOMENT_DATETIME_FORMAT],
-           formatTime:ChartEnums[ChartConstants.DATEPICKER_TIME_FORMAT],
-            lang:ChartEnums[ChartConstants.DATETPICKER_LANGUAGE],
-           onChangeDateTime:this.onInputChange
-       });
+        console.log(this.state.options);
+        require('../bower_components/datetimepicker/jquery.datetimepicker');
+       jQuery(this.refs.datetimefield.getDOMNode()).datetimepicker(this.state.options);
     },
     onInputChange: function(e) {
            var m = moment(e);

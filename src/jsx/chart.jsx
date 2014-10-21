@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
     
 var React = require('react');
-var charts = require('../bower_components/chartjs/Chart.js');
+//var charts = require('../bower_components/chartjs/Chart.js');
 var ChartStore = require('../src/js/ChartStore');
 
 module.exports = React.createClass({
@@ -26,6 +26,7 @@ module.exports = React.createClass({
         ChartStore.removeLoadListener(this.dataUpdateDone)
     },
     dataUpdateDone:function(){
+        var charts = require('chart.js/Chart');
         var gui= ChartStore.getUi();
         this.setState({pending:false});
         this.forceUpdate();

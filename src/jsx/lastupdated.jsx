@@ -11,12 +11,14 @@ var LastUpdated = React.createClass({
     },
     componentDidMount: function() {
         ChartStore.addChangeListener(this.changeHandler);
+        ChartStore.addLoadListener(this.changeHandler)
     },
     changeHandler: function() {
         this.setState({lastUpdated:ChartStore.getLastUpdated()});
     },
     componentWillUnmount: function() {
         ChartStore.removeChangeListener(this.changeHandler);
+        ChartStore.removeLoadListener(this.changeHandler);
     },
     render: function(){
         return(<div>

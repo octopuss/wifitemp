@@ -20,6 +20,8 @@ Technologies
 *	[Node.js](http://nodejs.org/) - runtime + serverside packages
 *	[Bower](http://bower.io/) - clientside dependencies
 *	[webpack](http://webpack.github.io/) - clientside module bundler
+*	[Sass](http://sass-lang.com/) - Sass css preprocessor
+*	[Express.js](http://expressjs.com/) - Node.js web application framework
 
 **Application dependencies**
 
@@ -34,7 +36,7 @@ Technologies
 *   [Promises.js](https://www.promisejs.org/) - asynchronous callbacks wrapper
 
 **Other**
-
+* [Apiary.io](http://apiary.io/)
 * [Travis CI](https://travis-ci.org/)
 
 **Hardware**:
