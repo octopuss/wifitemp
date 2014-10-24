@@ -1,12 +1,4 @@
 var express = require('express');
-var router = express.Router();
-var react = require('react');
-var path = require('path');
-console.log(__dirname);
-var appDir  = path.dirname(require.main.filename);
-console.log();
-//var App = require(appDir+'/work/app');
-//var App = require('D:/8puss/work/new_workspace/src/jsx/app');
 
 /* GET home page. */
 
