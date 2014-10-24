@@ -5,7 +5,8 @@ var path = require('path');
 console.log(__dirname);
 var appDir  = path.dirname(require.main.filename);
 console.log();
-var App = require(appDir+'/work/app');
+//var App = require(appDir+'/work/app');
+//var App = require('D:/8puss/work/new_workspace/src/jsx/app');
 
 /* GET home page. */
 
@@ -26,9 +27,6 @@ function formattedTime(){
     return today;
 }
 
-router.get('/', function(req, res) {
-  var c =react.renderComponentToString(App());
-  res.render('index', { title: 'Teploměr Jungmannova', content : c, generated:formattedTime()});
-});
-
-module.exports = router;
+exports.index = function(req, res){
+    res.render('index', { title: 'Teploměr Jungmannova', generated:formattedTime(), js: 'index'});
+};

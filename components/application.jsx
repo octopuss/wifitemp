@@ -1,14 +1,19 @@
 /** @jsx React.DOM */
+/*
+App module
+ */
 var imgStyle={'padding-top':'15px'};
+var path = require('path');
+var appDir  = path.dirname(require.main.filename);
 var React = require('react');
-var Menu = require('./menu.js');
-var ChartPanel = require('./chartpanel.js');
-var LatestReading = require('./latestreading.js');
-var DatetimeSelector = require('./datetimeselector.js');
-var LastUpdated = require('./lastupdated.js');
-var ChartStore = require('../src/js/ChartStore');
+var Menu = require('./Menu.jsx');
+var ChartPanel = require('./Chartpanel.jsx');
+var LatestReading = require('./Latestreading.jsx');
+var DatetimeSelector = require('./Datetimeselector.jsx');
+var LastUpdated = require('./Lastupdated.jsx');
+var ChartStore = require('../lib/ChartStore');
 
-var App = React.createClass({
+var Application = React.createClass({
     componentDidMount: function(){
         ChartStore.setup(this.props);
     },
@@ -34,4 +39,4 @@ var App = React.createClass({
         </div>);
     }
 });
-module.exports=App;
+module.exports=Application;

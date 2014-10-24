@@ -7,17 +7,17 @@ var rename = require("gulp-rename");
 var args = yargs.alias('p', 'production').argv;
 var minifycss = require('gulp-minify-css');
 var sass  = require('gulp-sass');
-var notify = require("gulp-notify");
 var uglify = require("gulp-uglify");
 var webpack = require("gulp-webpack");
+var path = require("path");
 
 
 config = {
     paths : {
         bowerDir :'bower_components',
-        sassPath : './src/scss',
-        jsxPath : './src/jsx',
-        jsPath: './src/js',
+        sassPath : './public/scss',
+        jsxPath : './components',
+        jsPath: './lib',
         distDir : 'dist',
         resources : {
             cssDir : '/css',
@@ -29,7 +29,7 @@ config = {
             //'bower_components/bootstrap/dist/css/bootstrap.css',
                 //'bower_components/bootstrap/dist/css/bootstrap-theme.css',
                 'bower_components/datetimepicker/jquery.datetimepicker.css',
-                'src/css/yeti.css',
+                'public/css/yeti.css',
                 'bower_components/fontawesome/css/font-awesome.css'
         ],
         fontDirs :
@@ -41,31 +41,12 @@ config = {
 };
 
 
-var displayError = function(error) {
 
-    // Initial building up of the error
-    var errorString = '[' + error.plugin + ']';
-    errorString += ' ' + error.message.replace("\n",''); // Removes new line at the end
-
-    // If the error contains the filename or line number add it to the string
-    if(error.fileName)
-        errorString += ' in ' + error.fileName;
-
-    if(error.lineNumber)
-        errorString += ' on line ' + error.lineNumber;
-
-    // This will output an error like the following:
-    // [gulp-sass] error message in file_name on line 1
-    console.error(errorString);
-}
-
-
-
-gulp.task('jsx', function () {
-    return gulp.src(config.paths.jsxPath+'/*.jsx')
-        .pipe(react())
-        .pipe(gulp.dest(config.paths.workDir));
-});
+//gulp.task('jsx', function () {
+//    return gulp.src(config.paths.jsxPath+'/*.jsx')
+//        .pipe(react())
+//        .pipe(gulp.dest(config.paths.workDir));
+//});
 
 gulp.task('sass', function() {
     return gulp.src(config.paths.sassPath+'/*.scss')
@@ -81,11 +62,9 @@ gulp.task('css', function() {
     return gulp.src(csss.concat(config.paths.cssDirs))
         .pipe(concat("main.css"))
         .pipe(gulpif(args.production,minifycss()))
-//        .pipe(uncss({
-//           html: 'D:/8puss/work/new_workspace/wifitemp/index.html'
-//        }))
+
         .pipe(gulp.dest(config.paths.distDir+config.paths.resources.cssDir))
-})
+});
 
 //todo clear work dir after finish
 //todo pridat jshint
@@ -96,10 +75,28 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest(config.paths.distDir+config.paths.resources.fontsDir))
 })
 
-gulp.task('js',['jsx'], function () {
-    return gulp.src([config.paths.jsPath+'/*.js',config.paths.workDir+'/*.js'])
-        .pipe(webpack())
-        .pipe(rename('app.js'))
+gulp.task('js', function () {
+    return gulp.src(['./'])
+        .pipe(webpack({
+            entry:{
+                index:   './views/index.jsx' ,
+                starter:'./lib/starter.js'
+
+            },
+            module: {
+                loaders: [
+                    { test: /\.jsx$/, loader: 'jsx-loader' }
+                ]
+            },
+            resolve :{
+                modulesDirectories:["node_modules","components"]
+            },
+            output: {
+                path: path.join(__dirname, "dist"),
+                filename: "[name].js"
+            }
+        }))
+        //.pipe(rename('app.js'))
         .pipe(gulpif(args.production, uglify()))
         .pipe(gulp.dest(config.paths.distDir+config.paths.resources.jsDir))
 })

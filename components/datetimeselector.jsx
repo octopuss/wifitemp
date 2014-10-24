@@ -1,12 +1,13 @@
 /** @jsx React.DOM */
-
+/*
+DatetimeSelector module
+ */
 var React = require('react');
 var jQuery = require('jquery');
 var moment = require('moment');
-
-var AppDispatcher = require('../src/js/AppDispatcher');
-var ChartConstants = require('../src/js/ChartConstants');
-var ChartEnums = require('../src/js/ChartEnums');
+var AppDispatcher = require('../lib/AppDispatcher');
+var ChartConstants = require('../lib/ChartConstants');
+var ChartEnums = require('../lib/ChartEnums');
 
 
 
@@ -31,7 +32,7 @@ var DatetimeSelector = React.createClass({
     },
     componentDidMount:function(){
         console.log(this.state.options);
-        require('../bower_components/datetimepicker/jquery.datetimepicker');
+        require('../bower_components/datetimepicker/jquery.datetimepicker.js');
        jQuery(this.refs.datetimefield.getDOMNode()).datetimepicker(this.state.options);
     },
     onInputChange: function(e) {

@@ -1,8 +1,10 @@
 /** @jsx React.DOM */
+/*
+    Chart module
+*/
     
 var React = require('react');
-//var charts = require('../bower_components/chartjs/Chart.js');
-var ChartStore = require('../src/js/ChartStore');
+var ChartStore = require('../lib/ChartStore');
 
 module.exports = React.createClass({
     getInitialState: function() {

@@ -1,10 +1,12 @@
 /** @jsx React.DOM */
-
+/*
+Readingblock module
+ */
 var React = require('react');
 var Alert = require('react-bootstrap/Alert');
-var ChartConstants = require('../src/js/ChartConstants');
-var ChartEnums = require('../src/js/ChartEnums');
-var ChartStore = require('../src/js/ChartStore');
+var ChartConstants = require('../lib/ChartConstants');
+var ChartEnums = require('../lib/ChartEnums');
+var ChartStore = require('../lib/ChartStore');
 
 var ReadingBlock = React.createClass({
 

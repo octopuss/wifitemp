@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var ChartStore = require('../src/js/ChartStore');
+var ChartStore = require('../lib/ChartStore');
 
 var LastUpdated = React.createClass({
     getInitialState: function() {

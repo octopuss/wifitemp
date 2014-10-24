@@ -1,8 +1,8 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var MenuButton = require('./menubutton');
-var ChartConstants = require('../src/js/ChartConstants');
+var MenuButton = require('./Menubutton.jsx');
+var ChartConstants = require('../lib/ChartConstants');
 
 
 module.exports = React.createClass({

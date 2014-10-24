@@ -1,12 +1,14 @@
 /** @jsx React.DOM */
-
+/*
+Chartpanel module
+ */
 var React = require('react');
 var Panel = require('react-bootstrap/Panel');
-var Chart = require('./chart');
-var ReadingBlock = require('./readingblock');
-var ChartConstants = require('../src/js/ChartConstants');
-var ChartEnums = require('../src/js/ChartEnums');
-var ChartStore = require('../src/js/ChartStore');
+var Chart = require('./Chart.jsx');
+var ReadingBlock = require('./Readingblock.jsx');
+var ChartConstants = require('../lib/ChartConstants');
+var ChartEnums = require('../lib/ChartEnums');
+var ChartStore = require('../lib/ChartStore');
 var moment = require('moment');
 var Icon = require('react-bootstrap/Glyphicon');
 

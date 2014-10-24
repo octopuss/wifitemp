@@ -1,11 +1,13 @@
 /** @jsx React.DOM */
-
+/*
+Menubutton module
+ */
 var React = require('react');
 var Button = require('react-bootstrap/Button');
-var ButtonIcon = require('./buttonicon');
-var ChartConstants = require('../src/js/ChartConstants');
-var ChartStore = require('../src/js/ChartStore');
-var AppDispatcher = require('../src/js/AppDispatcher');
+var ButtonIcon = require('./Buttonicon.jsx');
+var ChartConstants = require('../lib/ChartConstants');
+var ChartStore = require('../lib/ChartStore');
+var AppDispatcher = require('../lib/AppDispatcher');
 
 
 var MenuButton = React.createClass({
