@@ -15,12 +15,12 @@ var LatestReading = React.createClass({
         return {readingValue:0, readingDimension:ChartEnums[ChartConstants.READING_DIMENSION_CELSIUS], pending:false};
     },
     componentDidMount: function() {
-        ChartStore.addLoadListener(this.changeHandler);
+        ChartStore.addListener(ChartConstants.LOAD_EVENT,this.changeHandler);
 
     },
 
     componentWillUnmount: function() {
-        ChartStore.removeLoadListener(this.changeHandler);
+        ChartStore.removeListener(ChartConstants.LOAD_EVENT,this.changeHandler);
 
     },
     changeHandler: function() {

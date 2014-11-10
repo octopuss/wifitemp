@@ -18,15 +18,15 @@ var MenuButton = React.createClass({
     // add and remove listenners
     componentDidMount: function() {
         this.changeActiveState();
-        ChartStore.addChangeListener(this.changeHandler);
-        ChartStore.addPendingListener(this.togglePendingState);
-        ChartStore.addDoneListener(this.togglePendingState);
+        ChartStore.addListener(ChartConstants.CHANGE_EVENT,this.changeHandler);
+        ChartStore.addListener(ChartConstants.PENDING_EVENT,this.togglePendingState);
+        ChartStore.addListener(ChartConstants.LOADING_DONE_EVENT,this.togglePendingState);
     },
 
     componentWillUnmount: function() {
-        ChartStore.removeChangeListener(this.changeHandler);
-        ChartStore.removePendingListener(this.togglePendingState);
-        ChartStore.removeDoneListener(this.togglePendingState);
+        ChartStore.removeListener(ChartConstants.CHANGE_EVENT,this.changeHandler);
+        ChartStore.removeListener(ChartConstants.PENDING_EVENT,this.togglePendingState);
+        ChartStore.removeListener(ChartConstants.LOADING_DONE_EVENT,this.togglePendingState);
     },
 
     changeHandler: function() {

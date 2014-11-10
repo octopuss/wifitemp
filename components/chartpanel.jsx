@@ -20,14 +20,14 @@ var ChartPanel = React.createClass({
         return (fromTo);
     },
     componentDidMount: function() {
-        ChartStore.addChangeListener(this.changeHandler);
-        ChartStore.addLoadListener(this.changeHandler);
+        ChartStore.addListener(ChartConstants.CHANGE_EVENT, this.changeHandler);
+        ChartStore.addListener(ChartConstants.LOAD_EVENT, this.changeHandler);
         this.changeHandler();
     },
 
     componentWillUnmount: function() {
-        ChartStore.removeChangeListener(this.changeHandler);
-        ChartStore.removeLoadListener(this.changeHandler);
+        ChartStore.removeListener(ChartConstants.CHANGE_EVENT, this.changeHandler);
+        ChartStore.removeListener(ChartConstants.LOAD_EVENT,this.changeHandler);
     },
 
     changeHandler: function() {

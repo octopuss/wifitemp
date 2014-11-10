@@ -5,6 +5,8 @@
     
 var React = require('react');
 var ChartStore = require('../lib/ChartStore');
+var ChartConstants = require('../lib/ChartConstants');
+var ChartEnums = require('../lib/ChartEnums');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -14,18 +16,16 @@ module.exports = React.createClass({
         };
     },
     componentDidMount: function(){
-        ChartStore.addPendingListener(this.togglePendingState);
-        ChartStore.addDoneListener(this.dataUpdateDone);
-        ChartStore.addChangeListener(this.changeHandler);
-        ChartStore.addLoadListener(this.dataUpdateDone);
-       // var ctx = document.getElementById(this.props.id).getContext("2d");
-       // new charts(ctx).Line(this.state.data, this.state.options);
+        ChartStore.addListener(ChartConstants.PENDING_EVENT,this.togglePendingState);
+        ChartStore.addListener(ChartConstants.LOADING_DONE_EVENT,this.dataUpdateDone);
+        ChartStore.addListener(ChartConstants.CHANGE_EVENT,this.changeHandler);
+        ChartStore.addListener(ChartConstants.LOAD_EVENT,this.dataUpdateDone);
     },
     componentWillUnmount: function() {
-        ChartStore.removeChangeListener(this.changeHandler);
-        ChartStore.removePendingListener(this.togglePendingState);
-        ChartStore.removeDoneListener(this.dataUpdateDone);
-        ChartStore.removeLoadListener(this.dataUpdateDone)
+        ChartStore.removeListener(ChartConstants.CHANGE_EVENT,this.changeHandler);
+        ChartStore.removeListener(ChartConstants.PENDING_EVENT,this.togglePendingState);
+        ChartStore.removeListener(ChartConstants.LOAD_EVENT,this.dataUpdateDone);
+        ChartStore.removeListener(ChartConstants.LOADING_DONE_EVENT,this.dataUpdateDone)
     },
     dataUpdateDone:function(){
         var charts = require('chart.js/Chart');

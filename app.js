@@ -6,11 +6,12 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 
 var routes = require('./routes');
-
+var repoActions = require('./routes/repository');
 
 var app = express();
 
 // view engine setup
+require('node-jsx').install();
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine({jsx: {harmony: true},beautify:false}));
@@ -24,6 +25,8 @@ app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('/', routes.index);
+app.get('/latest', repoActions.findLatest);
+app.get('/data', repoActions.data);
 
 
 module.exports = app;

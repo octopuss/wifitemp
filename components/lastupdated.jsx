@@ -2,6 +2,7 @@
 
 var React = require('react');
 var ChartStore = require('../lib/ChartStore');
+var ChartConstants = require('../lib/ChartConstants');
 
 var LastUpdated = React.createClass({
     getInitialState: function() {
@@ -10,15 +11,15 @@ var LastUpdated = React.createClass({
       };
     },
     componentDidMount: function() {
-        ChartStore.addChangeListener(this.changeHandler);
-        ChartStore.addLoadListener(this.changeHandler)
+        ChartStore.addListener(ChartConstants.CHANGE_EVENT,this.changeHandler);
+        ChartStore.addListener(ChartConstants.LOAD_EVENT,this.changeHandler)
     },
     changeHandler: function() {
         this.setState({lastUpdated:ChartStore.getLastUpdated()});
     },
     componentWillUnmount: function() {
-        ChartStore.removeChangeListener(this.changeHandler);
-        ChartStore.removeLoadListener(this.changeHandler);
+        ChartStore.removeListener(ChartConstants.CHANGE_EVENT,this.changeHandler);
+        ChartStore.removeListener(ChartConstants.LOAD_EVENT,this.changeHandler);
     },
     render: function(){
         return(<div>

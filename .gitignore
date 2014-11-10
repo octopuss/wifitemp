@@ -4,5 +4,6 @@
 target
 /bower_components
 /node_modules
+/wt-nodejs
 /.idea
 /*.iml
