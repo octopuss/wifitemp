@@ -25,7 +25,7 @@ var LatestReading = React.createClass({
     },
     changeHandler: function() {
         var lr  =ChartStore.getLatestReading()[0];
-        this.setState({readingValue:lr.value, readingDimension:lr.valueDimension});
+        this.setState({readingValue:Number(lr.value).toFixed(ChartEnums[ChartConstants.READING_PRECISION]), readingDimension:lr.valueDimension});
         console.log(lr.value);
     },
 

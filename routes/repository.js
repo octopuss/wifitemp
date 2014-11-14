@@ -13,3 +13,9 @@ exports.data = function(req,res) {
         res.send(data);
     });
 };
+
+exports.tmp = function(req,res) {
+    repo.getMinMaxAvgDto(req.query.fromTime,req.query.toTime,req.query.dataScope, function(data){
+        res.send(data);
+    });
+};

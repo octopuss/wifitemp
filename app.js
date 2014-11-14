@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.get('/', routes.index);
 app.get('/latest', repoActions.findLatest);
 app.get('/data', repoActions.data);
+app.get('/tmp', repoActions.tmp);
 
 
 module.exports = app;
