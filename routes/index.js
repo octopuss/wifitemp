@@ -20,5 +20,5 @@ function formattedTime(){
 }
 
 exports.index = function(req, res){
-    res.render('index', { title: 'Teploměr Jungmannova', generated:formattedTime(), js: 'index'});
+    res.render('Index.jsx', { title: 'Teploměr Jungmannova', generated:formattedTime(), js: 'index'});
 };
