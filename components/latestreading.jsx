@@ -11,7 +11,6 @@ var ChartStore = require('../lib/ChartStore');
 var LatestReading = React.createClass({
 
     getInitialState:function(){
-        //var lr = ChartStore.getLatestReading();
         return {readingValue:0, readingDimension:ChartEnums[ChartConstants.READING_DIMENSION_CELSIUS], pending:false};
     },
     componentDidMount: function() {
@@ -32,11 +31,10 @@ var LatestReading = React.createClass({
     render: function(){
         return(<Alert bsStyle="warning">
             <strong>Aktuální teplota</strong>
-            <h2>{this.state.readingValue}{this.state.readingDimension}
-             </h2>
+            <h2>{this.state.readingValue} {this.state.readingDimension}</h2>
         </Alert>
         );
     }
-})
+});
 
 module.exports = LatestReading;

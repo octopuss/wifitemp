@@ -70,7 +70,8 @@ var MenuButton = React.createClass({
     },
 
     render: function(){
-        return (<Button bsStyle="primary" bsSize="large" onClick={this.clickHandler} block active={this.state.active} disabled={this.state.disabled}>{this.state.pending ? <ButtonIcon/> : <ButtonIcon icon={this.props.icon}/>}{this.props.text}</Button>)
+        return (<Button bsStyle="primary" bsSize="large" onClick={this.clickHandler} block active={this.state.active} disabled={this.state.disabled}>
+        {this.state.pending ? <ButtonIcon/> : <ButtonIcon icon={this.props.icon}/>} {this.props.text}</Button>)
     }
 
 });
