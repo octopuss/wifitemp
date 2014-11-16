@@ -7,7 +7,7 @@ var ChartConstants = require('../lib/ChartConstants');
 
 module.exports = React.createClass({
     render: function () {
-        return(<div>
+        return (<div>
             <MenuButton icon="dashboard" text="V hodině" chartType={ChartConstants.CHART_TYPE_HOUR}/>
             <MenuButton icon="time" text="Ve dne" chartType={ChartConstants.CHART_TYPE_DAY}/>
             <MenuButton icon="calendar" text="V měsící" chartType={ChartConstants.CHART_TYPE_MONTH}/>

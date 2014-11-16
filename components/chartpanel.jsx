@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 /*
-Chartpanel module
+ Chartpanel module
  */
 var React = require('react');
 var Panel = require('react-bootstrap/Panel');
@@ -13,32 +13,37 @@ var moment = require('moment');
 var Icon = require('react-bootstrap/Glyphicon');
 
 
-
 var ChartPanel = React.createClass({
-    getInitialState: function(){
+    getInitialState: function () {
         var fromTo = ChartStore.getFromToDates();
         return (fromTo);
     },
-    componentDidMount: function() {
+    componentDidMount: function () {
         ChartStore.addListener(ChartConstants.CHANGE_EVENT, this.changeHandler);
         ChartStore.addListener(ChartConstants.LOAD_EVENT, this.changeHandler);
         this.changeHandler();
     },
 
-    componentWillUnmount: function() {
+    componentWillUnmount: function () {
         ChartStore.removeListener(ChartConstants.CHANGE_EVENT, this.changeHandler);
-        ChartStore.removeListener(ChartConstants.LOAD_EVENT,this.changeHandler);
+        ChartStore.removeListener(ChartConstants.LOAD_EVENT, this.changeHandler);
     },
 
-    changeHandler: function() {
-       datetimes = ChartStore.getFromToDates();
-       this.setState({
-           fromTime:moment(datetimes.fromTime).format(ChartEnums[ChartConstants.MOMENT_DATETIME_FORMAT]),
-           toTime:moment(datetimes.toTime).format(ChartEnums[ChartConstants.MOMENT_DATETIME_FORMAT])
-       });
+    changeHandler: function () {
+        datetimes = ChartStore.getFromToDates();
+        this.setState({
+            fromTime: moment(datetimes.fromTime).format(ChartEnums[ChartConstants.MOMENT_DATETIME_FORMAT]),
+            toTime: moment(datetimes.toTime).format(ChartEnums[ChartConstants.MOMENT_DATETIME_FORMAT])
+        });
     },
-    render:function() {
-        return (<Panel header={<div><Icon glyph="tasks"/>&nbsp;<span>{this.props.title}&nbsp;<b>{this.state.fromTime}-{this.state.toTime}</b></span></div>}>
+    render: function () {
+        return (<Panel header={<div>
+            <Icon glyph="tasks"/>
+        &nbsp;
+            <span>{this.props.title}&nbsp;
+                <b>{this.state.fromTime}-{this.state.toTime}</b>
+            </span>
+        </div>}>
             <div className="col-md-10 chartContainer">
                 <Chart id={this.props.chartId}/>
             </div>
